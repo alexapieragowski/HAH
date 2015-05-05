@@ -21,22 +21,22 @@ public class DiggerMain extends JFrame {
 	    Font myfont = new Font("arial", Font.BOLD, 36);
 	    score.setFont(myfont);
 	    window.add(score, BorderLayout.NORTH);
-	    
-	    
 	}
 	
 
 	
 	public static void main(String[] args) {
         DiggerMain mainFrame = new DiggerMain();
-		
 		mainFrame.setSize(600, 700);
 		mainFrame.setTitle("Digger");
 		mainFrame.setVisible(true);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
-	
+	public void addScore(int score){
+		this.currentScore += score;
+		repaint();
+	}
 	
 	
 	/*
@@ -51,7 +51,7 @@ public class DiggerMain extends JFrame {
 			in.close();
 			filein.close();
 		}catch(IOException e){
-			System.out.println("he class Level has been changed since this was saved, please update saves.");
+			System.out.println("The class Level has been changed since this was saved, please update saves.");
 			throw new IllegalStateException(e);
 		}catch(ClassNotFoundException e){
 			System.out.println("File not found.");
