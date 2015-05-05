@@ -1,16 +1,40 @@
-import java.io.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Font;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 
 //Please let this work
 public class DiggerMain extends JFrame {
 	private Level current_level;
+	private Integer currentScore = 0;
 	
+	public DiggerMain() {
+		Container window = getContentPane();
+	    window.setLayout(new BorderLayout());
+	    JLabel score = new JLabel(currentScore.toString());
+	    Font myfont = new Font("arial", Font.BOLD, 36);
+	    score.setFont(myfont);
+	    window.add(score, BorderLayout.NORTH);
+	    
+	    
+	}
 	
+
 	
-	
-	
-	
+	public static void main(String[] args) {
+        DiggerMain mainFrame = new DiggerMain();
+		
+		mainFrame.setSize(600, 700);
+		mainFrame.setTitle("Digger");
+		mainFrame.setVisible(true);
+		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
 	
 	
 	
