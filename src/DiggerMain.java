@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 
 //Please let this work
 public class DiggerMain extends JFrame {
-	private Level current_level;
+	public Level current_level;
 	
 	
 	
