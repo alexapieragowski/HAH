@@ -1,4 +1,7 @@
+import javax.swing.*;
+import java.io.*;
+import java.awt.*;
 
-public class DiggerMain {
+public class DiggerMain extends JFrame {
 
 }
