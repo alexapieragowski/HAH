@@ -1,12 +1,14 @@
 
 import java.awt.event.*;
 
+//Class not for sure,
+//may just make heroMovement be in the hero class
+//and levelSwitch in the main class.
 
-
-public class KeyListener {
+public class KeyListener implements java.awt.event.KeyListener{
 	private DiggerMain main;
-	private String saves[];
-	private int current_level;
+	private String saves[]={"Test"};
+	private int current_level=0;
 	
 	public void initMain(DiggerMain main){
 		this.main=main;
@@ -31,6 +33,22 @@ public class KeyListener {
 			case KeyEvent.VK_D: {main.loadLevel(saves[current_level+1]); break;}
 			default: break;
 		}
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		levelSwitch(e);
+		heroMovement(e);
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		
 	}
 	
 }
