@@ -57,8 +57,10 @@ public class DiggerMain extends JFrame {
 //	    window.add(new LevelBuilder(this),BorderLayout.CENTER);
 	}
 	
-	public void addScore(int score){
-		this.currentScore += score;
+	public void addScore(Integer score){
+		this.currentScore += 1;
+		this.score.setText("Score: "+currentScore.toString());
+		this.currentScore += score-1;
 		this.score.setText("Score: "+currentScore.toString());
 	}
 	

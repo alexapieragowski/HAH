@@ -22,8 +22,8 @@ public class Level extends JPanel{
 		setBackground(Color.black);
 		for (int i = 0; i < gameSize; i++) {
 	        for (int j = 0; j < gameSize; j++) {
-	        	entities[i][j] = new Entity(Color.gray,0,dm, i, j);//Fills the game with "Dirt"
-	        	add(entities[i][j]);    	
+	        	entities[j][i] = new Entity(Color.gray,0,dm, j, i);//Fills the game with "Dirt"
+	        	add(entities[j][i]);    	
 	        }
 		}
 		repaint();
@@ -31,9 +31,9 @@ public class Level extends JPanel{
 	
 	public void addHero(int x, int y) { //Puts a hero at the chosen location, for initial level setup.
 		remove(x+gameSize*y);
-		entities[x][y]= new Entity(Color.blue,0,dm, x, y);//TODO make this a hero
+		entities[x][y]= new Hero(dm, x, y);
 		add(entities[x][y],x+gameSize*y);
-		entities[x][y].addKeyListener(dm.keyListener);
+//		entities[x][y].addKeyListener((Hero)entities[x][y]);
 		repaint();
 	}
 	public void addEmerald(int x, int y) { //Puts a Emerald at the chosen location, for initial level setup.
@@ -56,15 +56,17 @@ public class Level extends JPanel{
 	}
 	
 	public void move(int x, int y, int dx, int dy){
-		Entity temp = entities[x][y];
-		Entity next = entities[x+dx][y+dy];
-//		if (next==Emerald || next==brokenGold || next==Dirt || next==Hero) next.die();
-//		else if (next==Hobbin || next==Nobbin) temp.die();
-//		else if (unbrokenGold) move(x+dx, y, dx, 0);
-		next.die();
-		entities[x+dx][y+dy] = entities[x][y];
-		remove(temp);
-		
-		
+		if (!(x+dx==-1||x+dx==gameSize||y+dy==-1||y+dy==gameSize)){
+			Entity temp = entities[x][y];
+			Entity next = entities[x+dx][y+dy];
+			next.die();
+			remove(x+dx+gameSize*(y+dy));
+			next= new Hero(dm, x+dx, y+dy);
+			add(next,(x+dx)+gameSize*(y+dy));
+			remove(x+gameSize*y);
+			temp= new Entity(Color.black,0,dm, x, y);
+			add(temp,x+gameSize*y);
+			next.requestFocusInWindow();
+		}
 	}
 }
