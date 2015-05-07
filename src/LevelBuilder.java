@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.nio.file.Paths;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -173,7 +174,7 @@ public class LevelBuilder extends JPanel{
 					add(button[j][i]);
 					button[j][i].setBackground(Color.gray);
 					button[j][i].addActionListener(this);
-					entities[j][i]=new Entity(Color.gray,0,dm);
+					entities[j][i]=new Entity(Color.gray,0,dm,j,i);
 				}
 			}
 		}
@@ -181,7 +182,7 @@ public class LevelBuilder extends JPanel{
 			for (int i=0;i<gameSize;i++) {
 				for (int j=0;j<gameSize;j++){
 					button[j][i].setBackground(Color.gray);
-					entities[j][i]=new Entity(Color.gray,0,dm);
+					entities[j][i]=new Entity(Color.gray,0,dm,j,i);
 				}
 			}
 		}
@@ -194,37 +195,37 @@ public class LevelBuilder extends JPanel{
 			switch (entityToBePlaced){
 				case "Dirt":{
 					button[x][y].setBackground(Color.gray);
-					entities[x][y]=new Entity(Color.gray,0,dm);
+					entities[x][y]=new Entity(Color.gray,0,dm, x,y);
 					break;
 				}
 				case "Hero":{
 					button[x][y].setBackground(Color.blue);
-					entities[x][y]=new Entity(Color.blue,0,dm);//TODO Make Hero
+					entities[x][y]=new Entity(Color.blue,0,dm,x,y);//TODO Make Hero
 					break;
 				}
 				case "Emerald":{
 					button[x][y].setBackground(Color.green);
-					entities[x][y]=new Entity(Color.green,100,dm);
+					entities[x][y]=new Entity(Color.green,100,dm,x,y);
 					break;
 				}
 				case "Nothing":{
 					button[x][y].setBackground(Color.black);
-					entities[x][y]=new Entity(Color.black,0,dm);
+					entities[x][y]=new Entity(Color.black,0,dm,x,y);
 					break;
 				}
 				case "Hobbin":{
 					button[x][y].setBackground(Color.red);
-					entities[x][y]=new Entity(Color.red,50,dm);//TODO Make Hobbin
+					entities[x][y]=new Entity(Color.red,50,dm,x,y);//TODO Make Hobbin
 					break;
 				}
 				case "Nobbin":{
 					button[x][y].setBackground(Color.orange);
-					entities[x][y]=new Entity(Color.orange,75,dm);//TODO Make Nobbin
+					entities[x][y]=new Entity(Color.orange,75,dm,x,y);//TODO Make Nobbin
 					break;
 				}
 				case "Gold":{
 					button[x][y].setBackground(Color.yellow);
-					entities[x][y]=new Entity(Color.yellow,100,dm);//TODO Make Gold
+					entities[x][y]=new Entity(Color.yellow,100,dm,x,y);//TODO Make Gold
 					break;
 				}
 				default: break;

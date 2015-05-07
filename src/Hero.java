@@ -5,8 +5,8 @@ import java.awt.event.KeyEvent;
 public class Hero extends Entity implements java.awt.event.KeyListener {
 	KeyEvent e;
 
-	public Hero(Color blue, DiggerMain dm) {
-		super(Color.blue, 0, dm);
+	public Hero(DiggerMain dm, int x_position, int y_position) {
+		super(Color.blue, 0, dm, x_position, y_position);
 		addKeyListener(this);
 
 	}
