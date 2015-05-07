@@ -1,5 +1,5 @@
 
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
 
 //Class not for sure,
 //may just make heroMovement be in the hero class
@@ -14,18 +14,7 @@ public class KeyListener implements java.awt.event.KeyListener{
 		this.main=main;
 	}
 	
-	public int[] heroMovement(KeyEvent e){
-		int delta_pos[] = {0,0};
-		int keypressed=e.getKeyCode();
-		switch (keypressed){
-			case KeyEvent.VK_LEFT: {delta_pos[0]=-1; break;}
-			case KeyEvent.VK_RIGHT: {delta_pos[0]=1; break;}
-			case KeyEvent.VK_UP: {delta_pos[1]=1; break;}
-			case KeyEvent.VK_DOWN: {delta_pos[1]=-1; break;}
-			default: break;
-		}
-		return delta_pos;
-	}
+	
 	public void levelSwitch(KeyEvent e){
 		int keypressed=e.getKeyCode();
 		switch (keypressed){
@@ -38,7 +27,6 @@ public class KeyListener implements java.awt.event.KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		levelSwitch(e);
-		heroMovement(e);
 	}
 
 	@Override

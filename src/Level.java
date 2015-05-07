@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -12,6 +13,7 @@ public class Level extends JPanel{
 	private DiggerMain dm;
 	private int gameSize = 16;
 	Entity entities[][]= new Entity[gameSize][gameSize];
+	KeyEvent e;
 	
 	public Level(DiggerMain dm){
 		this.dm=dm;
@@ -51,5 +53,9 @@ public class Level extends JPanel{
 		}catch(IOException e){
 			throw new IllegalStateException(e);
 		}
+	}
+	
+	public void move(int dx, int dy){
+		Hero.heroMovement(e);
 	}
 }

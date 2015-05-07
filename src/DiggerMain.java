@@ -1,6 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Font; 
+import java.awt.Font;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -35,25 +35,26 @@ public class DiggerMain extends JFrame {
 	    window.setLayout(new BorderLayout());
 	    Font myfont = new Font("arial", Font.BOLD, 36);
 	    
-	    score = new JLabel("Score: "+currentScore.toString());
-	    score.setFont(myfont);
-	    window.add(score, BorderLayout.NORTH);
-	    
-	    lifes = new JLabel("Lifes: "+currentLifes.toString());
-	    lifes.setFont(myfont);
-	    window.add(lifes, BorderLayout.SOUTH);
-	    
-	    //Below is just Testing to see what levels will currently look like
-	    //Once we get some pre-made levels flushed out this can just load the 
-	    //first one or display a menu screen of some sort.
-	    currentLevel = new Level(this);
-	    currentLevel.addHero(5,5);
-	    for (int i=2;i<4;i++){
-	    	for (int j=6;j<9;j++){
-	    		currentLevel.addEmerald(i,j);
-	    	}
-	    }
-	    window.add(currentLevel,BorderLayout.CENTER);
+//	    score = new JLabel("Score: "+currentScore.toString());
+//	    score.setFont(myfont);
+//	    window.add(score, BorderLayout.NORTH);
+//	    
+//	    lifes = new JLabel("Lifes: "+currentLifes.toString());
+//	    lifes.setFont(myfont);
+//	    window.add(lifes, BorderLayout.SOUTH);
+//	    
+//	    //Below is just Testing to see what levels will currently look like
+//	    //Once we get some pre-made levels flushed out this can just load the 
+//	    //first one or display a menu screen of some sort.
+//	    currentLevel = new Level(this);
+//	    currentLevel.addHero(5,5);
+//	    for (int i=2;i<4;i++){
+//	    	for (int j=6;j<9;j++){
+//	    		currentLevel.addEmerald(i,j);
+//	    	}
+//	    }
+//	    window.add(currentLevel,BorderLayout.CENTER);
+	    window.add(new LevelBuilder(this),BorderLayout.CENTER);
 	}
 	
 	public void addScore(int score){
