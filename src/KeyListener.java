@@ -7,8 +7,8 @@ import java.awt.event.KeyEvent;
 
 public class KeyListener implements java.awt.event.KeyListener{
 	private DiggerMain main;
-	private String saves[]={"Test"};
-	private int current_level=0;
+	private String saves[]={"Level1","Level2","Level3"};
+	private int current_level=-1;
 	
 	public void initMain(DiggerMain main){
 		this.main=main;
@@ -18,8 +18,20 @@ public class KeyListener implements java.awt.event.KeyListener{
 	public void levelSwitch(KeyEvent e){
 		int keypressed=e.getKeyCode();
 		switch (keypressed){
-			case KeyEvent.VK_U: {main.loadLevel(saves[current_level+1]); break;}
-			case KeyEvent.VK_D: {main.loadLevel(saves[current_level+1]); break;}
+			case KeyEvent.VK_U: {
+				if(current_level<saves.length){
+					main.loadLevel(saves[current_level+1]);
+					current_level++;
+					break;
+				}
+			}
+			case KeyEvent.VK_D: {
+				if(current_level>0){
+					main.loadLevel(saves[current_level-1]);
+					current_level--;
+					break;
+				}
+			}
 			default: break;
 		}
 	}

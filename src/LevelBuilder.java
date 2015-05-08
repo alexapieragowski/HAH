@@ -77,21 +77,8 @@ public class LevelBuilder extends JPanel{
 			};
 			buttons[1] = new menuButton(){//Opens a window to save the game state.
 	            public void actionPerformed(ActionEvent event) {
-	            	new File("Saves").mkdirs();
-	            	String path = Paths.get("Saves").toAbsolutePath().toString();
-	            	JFileChooser choose = new JFileChooser(path);
-	            	disablestuff(choose);
-	            	int choice =choose.showSaveDialog(this);
-	            	if (choice == JFileChooser.APPROVE_OPTION){
-	            		try{
-	            			FileOutputStream fileout = new FileOutputStream("Saves/"+choose.getSelectedFile().getName());
-	            			ObjectOutputStream out = new ObjectOutputStream(fileout);
-	            			out.writeObject(this);//TODO Make this save the Level created.
-	            			//To do so level must have a constructor that takes a list of entities.
-	            			out.close();
-	            			fileout.close();
-	            		}catch(IOException e){throw new IllegalStateException(e);}
-	            	}
+	            	Level level = new Level(dm,gamePanel.entities);
+	            	level.saveLevel();
 	            }
 			};
 			buttons[2] = new menuButton(){//dirt
@@ -154,7 +141,7 @@ public class LevelBuilder extends JPanel{
 	public class LevelPanel extends JPanel implements ActionListener{
 		private int gameSize = 16;
 		private JButton button[][] = new JButton[gameSize][gameSize];
-		private Entity entities[][]= new Entity[gameSize][gameSize];
+		protected Entity entities[][]= new Entity[gameSize][gameSize];
 		protected String entityToBePlaced;
 		
 		
@@ -200,7 +187,7 @@ public class LevelBuilder extends JPanel{
 				}
 				case "Hero":{
 					button[x][y].setBackground(Color.blue);
-					entities[x][y]=new Entity(Color.blue,0,dm,x,y);//TODO Make Hero
+					entities[x][y]=new Hero(dm,x,y);
 					break;
 				}
 				case "Emerald":{

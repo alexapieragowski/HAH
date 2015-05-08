@@ -7,21 +7,23 @@ import java.io.ObjectInputStream;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 
 //Please let this work
 public class DiggerMain extends JFrame {
-	protected KeyListener keyListener = new KeyListener();
+	protected transient KeyListener keyListener = new KeyListener();
 	protected Level currentLevel;
 	private Integer currentScore = 0;
 	private JLabel score;
 	private Integer currentLifes = 3;
 	private JLabel lifes;
+	private JPanel mainscreen;
 	
 	public static void main(String[] args) {
         DiggerMain mainFrame = new DiggerMain();
-		mainFrame.setSize(550, 660);
-		mainFrame.setTitle("Digger");
+		mainFrame.setSize(580, 700);
+		mainFrame.setTitle("Digger, Load level and click hero(blue) to start");
 		mainFrame.setVisible(true);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.requestFocusInWindow();
@@ -42,25 +44,24 @@ public class DiggerMain extends JFrame {
 	    lifes = new JLabel("Lifes: "+currentLifes.toString());
 	    lifes.setFont(myfont);
 	    window.add(lifes, BorderLayout.SOUTH);
-	    
 	    //Below is just Testing to see what levels will currently look like
 	    //Once we get some pre-made levels flushed out this can just load the 
 	    //first one or display a menu screen of some sort.
-	    currentLevel = new Level(this);
-	    currentLevel.addHero(5,5);
-	    for (int i=2;i<4;i++){
-	    	for (int j=6;j<9;j++){
-	    		currentLevel.addEmerald(i,j);
-	    	}
-	    }
-	    window.add(currentLevel,BorderLayout.CENTER);
-//	    window.add(new LevelBuilder(this),BorderLayout.CENTER);
+//	    currentLevel = new Level(this);
+//	    currentLevel.addHero(5,5);
+//	    for (int i=2;i<4;i++){
+//	    	for (int j=6;j<9;j++){
+//	    		currentLevel.addEmerald(i,j);
+//	    	}
+//	    }
+//	    window.add(currentLevel,BorderLayout.CENTER);
+	    mainscreen = new LevelBuilder(this);
+	    window.add(mainscreen,BorderLayout.CENTER);
 	}
 	
 	public void addScore(Integer score){
-		this.currentScore += 1;
-		this.score.setText("Score: "+currentScore.toString());
-		this.currentScore += score-1;
+		this.score.setText("Score: "+currentScore.toString()+" ");
+		this.currentScore += score;
 		this.score.setText("Score: "+currentScore.toString());
 	}
 	
@@ -89,6 +90,11 @@ public class DiggerMain extends JFrame {
 			throw new IllegalStateException(e);
 		}
 		currentLevel=load;
-		repaint();
+		currentLevel.initDm(this);
+		currentLevel.initEntities();
+		remove(mainscreen);
+		mainscreen=currentLevel;
+		add(currentLevel,BorderLayout.CENTER);
+		revalidate();
 	}
 }

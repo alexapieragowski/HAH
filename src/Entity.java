@@ -15,10 +15,13 @@ public class Entity extends Canvas{
 	
 	public Entity(Color color, Integer pointValue,DiggerMain dm, int x_position, int y_position) {
 		this.pointValue=pointValue;
-		this.dm=dm;
 		this.color=color;
 		position[0]=x_position;
 		position[1]=y_position;
+		initDmLevel(dm);
+	}
+	public void initDmLevel(DiggerMain dm) {
+		this.dm=dm;
 		level = dm.currentLevel;
 	}
 	
