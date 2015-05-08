@@ -44,3 +44,4 @@ Temporary Items
 
 # Project
 *.class
+/bin/
