@@ -25,10 +25,14 @@ public class Hero extends Entity implements java.awt.event.KeyListener {
 		}
 		super.movement(delta_pos[0], delta_pos[1]);
 	}
+	public void die(){
+		dm.loseLife();
+	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		heroMovement(e);
+		dm.keyListener.keyPressed(e);
 		
 	}
 
