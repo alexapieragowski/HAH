@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -16,10 +17,11 @@ import javax.swing.JPanel;
 
 
 
-public class Level extends JPanel implements Serializable{
+public class Level extends JPanel implements Serializable, Runnable{
 	private DiggerMain dm;
 	private int gameSize = 16;
 	protected Entity entities[][]= new Entity[gameSize][gameSize];
+	private static final int DELAY = 1000;
 	
 	public Level(DiggerMain dm){
 		initDm(dm);
@@ -33,6 +35,19 @@ public class Level extends JPanel implements Serializable{
 	        }
 		}
 		repaint();
+	}
+	public void update(){
+		ArrayList<Thread> t = new ArrayList<Thread>();
+		for (int i = 0; i < gameSize; i++) {
+	        for (int j = 0; j < gameSize; j++) {
+	        	if (entities[j][i].color==Color.red){
+	        		t.add(new Thread((Hobbin)entities[j][i]));
+	        	}
+	        }
+		}
+		for (int i=0;i<t.size();i++){
+			t.get(i).start();
+		}
 	}
 	public Level(DiggerMain dm,Entity entities[][]){
 		initDm(dm);
@@ -105,16 +120,26 @@ public class Level extends JPanel implements Serializable{
 	
 	public void move(int x, int y, int dx, int dy){
 		if (!(x+dx==-1||x+dx==gameSize||y+dy==-1||y+dy==gameSize)){
-			Entity temp = entities[x][y];
+			Entity current = entities[x][y];
 			Entity next = entities[x+dx][y+dy];
-			next.die();
-			remove(x+dx+gameSize*(y+dy));
-			next= new Hero(dm, x+dx, y+dy);
-			add(next,(x+dx)+gameSize*(y+dy));
-			remove(x+gameSize*y);
-			temp= new Entity(Color.black,0,dm, x, y);
-			add(temp,x+gameSize*y);
-			next.requestFocusInWindow();
+			if (next.color.equals(Color.red)||next.color.equals(Color.orange)) current.die();
+			else {
+				next.die();
+				remove(x+dx+gameSize*(y+dy));
+				entities[x+dx][y+dy] = new Hero(dm, x+dx, y+dy);
+				add(entities[x+dx][y+dy],(x+dx)+gameSize*(y+dy));
+				remove(x+gameSize*y);
+				entities[x][y] = new Entity(Color.black,0,dm, x, y);
+				add(entities[x][y],x+gameSize*y);
+				entities[x+dx][y+dy].requestFocusInWindow();
+			}
 		}
+	}
+	@Override
+	public void run() {
+		try{
+			update();
+			Thread.sleep(DELAY);
+		}catch (InterruptedException exception){}
 	}
 }

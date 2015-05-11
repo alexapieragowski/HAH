@@ -1,20 +1,11 @@
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.nio.file.Paths;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
 
@@ -118,20 +109,6 @@ public class LevelBuilder extends JPanel{
 			};
 			return buttons;
 		}
-		/*
-		 * Disables directory navigation for save/load windows,
-		 * because the user cannot be trusted with that grand power.
-		 */
-		private void disablestuff(Container container){
-			Component c[] = container.getComponents();
-			for(int i=0;i<c.length;i++){
-				if (c[i] instanceof JComboBox) ((JComboBox<?>)c[i]).setEnabled(false);//Disables drop down menus.
-				else if (c[i] instanceof JButton){
-					String text = ((JButton)c[i]).getText();
-					if (text==null||text.isEmpty()) ((JButton)c[i]).setEnabled(false);//Disables directory related buttons
-				}else if (c[i] instanceof Container) disablestuff((Container)c[i]);
-			}
-		}
 	}
 	
 	
@@ -202,7 +179,7 @@ public class LevelBuilder extends JPanel{
 				}
 				case "Hobbin":{
 					button[x][y].setBackground(Color.red);
-					entities[x][y]=new Entity(Color.red,50,dm,x,y);//TODO Make Hobbin
+					entities[x][y]=new Hobbin(dm,x,y);
 					break;
 				}
 				case "Nobbin":{

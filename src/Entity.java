@@ -9,7 +9,7 @@ public class Entity extends Canvas{
 	private Integer pointValue;
 	protected DiggerMain dm;
 	protected int position[] = new int[2];
-	private Color color;
+	protected Color color;
 	private Level level;
 	//private image sprite[];
 	
