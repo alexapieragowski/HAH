@@ -47,8 +47,7 @@ public class Weapon extends Entity implements java.awt.event.KeyListener, Runnab
 			weaponMovement(e);
 			Thread.sleep(DELAY);
 		}catch (InterruptedException exception){}
-	}
-	
+	}	
 
 	@Override
 	public void keyPressed(KeyEvent e) {
