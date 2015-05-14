@@ -1,13 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
-/**
- * 
- * Gives the enemey a firable weapon that it can kill enemies with
- *
- * @author heshelhj.
- *         Created May 14, 2015.
- */
+
 public class Weapon extends Entity implements Runnable {
 	private Hero hero;
 	private static final int DELAY = 1000;
