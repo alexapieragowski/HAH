@@ -27,7 +27,8 @@ public class Entity extends Canvas{
 		position[1]=y_position;
 		this.spriteName=spriteName;
 		switch (spriteName){
-			case "Gold": killPriority=3; break;
+			case "Gold": killPriority=9; break;
+			case "Weapon": killPriority=3; break;
 			case "Hobbin": killPriority=2; break;
 			case "Nobbin": killPriority=2; break;
 			case "Hero": killPriority=1; break;
