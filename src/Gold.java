@@ -17,7 +17,7 @@ public class Gold extends Entity {
 	}
 	
 	public void breakOpen(){
-		BrokenGold bg = new BrokenGold();
+		BrokenGold bg = new BrokenGold(dm, this.position[0],this.position[1]);
 	}
 	
 	
