@@ -22,22 +22,20 @@ public class DiggerMain extends JFrame {
 	
 	public static void main(String[] args) {
         DiggerMain mainFrame = new DiggerMain();
-		mainFrame.setSize(580, 700);
-		mainFrame.setTitle("Digger, Load level and click hero(blue) to start");
+		mainFrame.setSize(528, 636);
+		mainFrame.setTitle("Digger");
 		mainFrame.setVisible(true);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mainFrame.requestFocusInWindow();
-		Thread t = new Thread(mainFrame.currentLevel);
-		t.start();
+//		mainFrame.requestFocusInWindow();
+//		Thread t = new Thread(mainFrame.currentLevel);
+//		t.start();
 	}
 	
 	public DiggerMain() {
-		keyListener.initMain(this);
-		addKeyListener(keyListener);
-		
 		Container window = getContentPane();
 	    window.setLayout(new BorderLayout());
 	    Font myfont = new Font("arial", Font.BOLD, 36);
+	    
 	    
 	    score = new JLabel("Score: "+currentScore.toString());
 	    score.setFont(myfont);
@@ -46,19 +44,23 @@ public class DiggerMain extends JFrame {
 	    lifes = new JLabel("Lifes: "+currentLifes.toString());
 	    lifes.setFont(myfont);
 	    window.add(lifes, BorderLayout.SOUTH);
+	    
+	    boolean toggle = true;
 	    //Below is just Testing to see what levels will currently look like
 	    //Once we get some pre-made levels flushed out this can just load the 
 	    //first one or display a menu screen of some sort.
-//	    currentLevel = new Level(this);
-//	    currentLevel.addHero(5,5);
-//	    for (int i=2;i<4;i++){
-//	    	for (int j=6;j<9;j++){
-//	    		currentLevel.addEmerald(i,j);
-//	    	}
-//	    }
-//	    window.add(currentLevel,BorderLayout.CENTER);
-	    mainscreen = new LevelBuilder(this);
-	    window.add(mainscreen,BorderLayout.CENTER);
+	    if (toggle){
+		    currentLevel = new Level(this);
+		    currentLevel.initEntities();
+		    mainscreen=currentLevel;
+		    mainscreen.setFocusable(true);
+		    window.add(mainscreen,BorderLayout.CENTER);
+	    }
+	    else{
+		    mainscreen = new LevelBuilder(this);
+		    window.add(mainscreen,BorderLayout.CENTER);
+		    mainscreen.requestFocusInWindow();
+	    }
 	}
 	
 	public void addScore(Integer score){
@@ -96,7 +98,11 @@ public class DiggerMain extends JFrame {
 		currentLevel.initEntities();
 		remove(mainscreen);
 		mainscreen=currentLevel;
-		add(currentLevel,BorderLayout.CENTER);
+		add(mainscreen,BorderLayout.CENTER);
+		mainscreen.setFocusable(true);
+		currentLevel.setFocusable(true);
 		revalidate();
+		repaint();
+		currentLevel.repaint();
 	}
 }

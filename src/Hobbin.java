@@ -3,20 +3,16 @@ import java.util.ArrayList;
 
 
 public class Hobbin extends Enemies implements Runnable{
-	private Level level;
 	private Entity entities[][];
 	private ArrayList<Integer> emeralds;
 	private int indexOfClosest;
 	private static final int DELAY = 1000;
 	
 	public Hobbin(DiggerMain dm, int x_position, int y_position) {
-		super(Color.red,250,dm,x_position,y_position);
+		super(Color.red,250,dm,x_position,y_position, "Hobbin");
 		initDmLevel(dm);
 	}
-	public void initDmLevel(DiggerMain dm) {
-		this.dm=dm;
-		level=dm.currentLevel;
-	}
+	
 	public void howToMove(){
 		entities=level.entities;
 		getEmeralds();
@@ -38,7 +34,7 @@ public class Hobbin extends Enemies implements Runnable{
 		emeralds.clear();
 		for (int i=0;i<16;i++){
 			for (int j=0;j<16;j++){
-				if (entities[j][i].color==Color.green){
+				if (entities[j][i].color.equals(Color.green)){
 					emeralds.add(entities[j][i].position[0]);
 					emeralds.add(entities[j][i].position[1]);
 				}

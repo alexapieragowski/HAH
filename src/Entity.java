@@ -1,6 +1,11 @@
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 
 
@@ -10,32 +15,65 @@ public class Entity extends Canvas{
 	protected DiggerMain dm;
 	protected int position[] = new int[2];
 	protected Color color;
-	private Level level;
-	//private image sprite[];
+	protected Level level;
+	private transient BufferedImage sprite;
+	protected String spriteName;
+	protected int killPriority;
 	
-	public Entity(Color color, Integer pointValue,DiggerMain dm, int x_position, int y_position) {
+	public Entity(Color color, Integer pointValue,DiggerMain dm, int x_position, int y_position,String spriteName) {
 		this.pointValue=pointValue;
 		this.color=color;
 		position[0]=x_position;
 		position[1]=y_position;
+		this.spriteName=spriteName;
+		switch (spriteName){
+			case "Gold": killPriority=3; break;
+			case "Hobbin": killPriority=2; break;
+			case "Nobbin": killPriority=2; break;
+			case "Hero": killPriority=1; break;
+			case "Empty": killPriority=-1; break;
+			default: killPriority=0; break;
+		}
 		initDmLevel(dm);
+	}
+	public void loadImage(){
+		String picFile = "Images/"+spriteName+".png";
+	    try {                
+	    	sprite = ImageIO.read(new File(picFile));
+	    } catch (IOException e) {
+	    	System.out.println("Could not open picture file: " + picFile);
+	    }
+	    System.out.println("Loaded Image");
 	}
 	public void initDmLevel(DiggerMain dm) {
 		this.dm=dm;
 		level = dm.currentLevel;
+		loadImage();
 	}
 	
 	public void paint(Graphics g){ //Eventually these will be sprites instead of rectangles.
 		super.paint(g);
-		g.setColor(color);
-		g.fillRect(0, 0,32,32);
+		g.drawImage(sprite, position[0], position[1], null);
+		
 	}
 	public void movement(int dx, int dy) {
-		level.move(position[0], position[1], dx, dy);
+		Entity next;
+		if (level==null) System.out.println("Null");
+		if (position[0]+dx<0||position[0]+dx>(level.gameSize-1)*level.imageSize||position[1]+dy<0||position[1]+dy>(level.gameSize-1)*level.imageSize) next=null;
+		else next = level.entities[(position[0]+dx)/level.imageSize][(position[1]+dy)/level.imageSize];
+		if (next!=null){
+			if (killPriority>next.killPriority){
+				next.die();
+				level.entities[(position[0]+dx)/level.imageSize][(position[1]+dy)/level.imageSize]=this;
+				level.entities[(position[0])/level.imageSize][(position[1])/level.imageSize]= new Entity(Color.black,0,dm,position[0],position[0],"Empty");
+				position[0]+=dx;
+				position[1]+=dy;
+			}
+			else die();
+		}
 	}
 	
 	public void die(){
-		//Remove enemy?
 		awardPoints();
 	}
 	public void awardPoints(){

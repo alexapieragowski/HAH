@@ -1,7 +1,10 @@
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,32 +13,85 @@ import java.io.Serializable;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 
 
 public class Level extends JPanel implements Serializable, Runnable{
 	private DiggerMain dm;
-	private int gameSize = 16;
+	protected int gameSize = 16;
+	protected int imageSize = 32;
+	private String saves[]={"Level1","Level2","Level3"};
+	private int current_level=-1;
 	protected Entity entities[][]= new Entity[gameSize][gameSize];
 	private static final int DELAY = 1000;
+	protected Entity hero;
+	private transient BufferedImage background;
 	
 	public Level(DiggerMain dm){
 		initDm(dm);
+		setOpaque(true);
+		setBackground(Color.black);
+		for (int i = 0; i < gameSize; i++) {
+	        for (int j = 0; j < gameSize; j++) {
+	        	entities[j][i] = new Entity(Color.gray,0,dm, j*imageSize, i*imageSize,"Dirt");//Fills the game with "Dirt"
+	        	add(entities[j][i]);    	
+	        }
+		}
+		addHero(5,5);
+		for (int i = 0; i < 3;i++){
+			addEmerald(i+2,7);
+		}
+		entities[11][14] = new Hobbin(dm,11*imageSize,14*imageSize);
+		keybinding();
+	}
+	
+	public Level(DiggerMain dm,Entity entities[][],Entity hero){
+		this.hero=hero;
+		initDm(dm);
+		this.entities=entities;
 		setLayout(new GridLayout(gameSize, gameSize, 0, 0));
 		setOpaque(true);
 		setBackground(Color.black);
 		for (int i = 0; i < gameSize; i++) {
 	        for (int j = 0; j < gameSize; j++) {
-	        	entities[j][i] = new Entity(Color.gray,0,dm, j, i);//Fills the game with "Dirt"
 	        	add(entities[j][i]);    	
 	        }
 		}
-		repaint();
+		keybinding();
 	}
+	public void initDm(DiggerMain dm){
+		this.dm=dm;
+		initbg();
+		keybinding();
+	}
+	public void initbg(){
+		String picFile = "Images/Background.png";
+	    try {                
+	    	background = ImageIO.read(new File(picFile));
+	    } catch (IOException e) {
+	    	System.out.println("Could not open picture file: " + picFile);
+	    }
+	    System.out.println("Loaded Background");
+	}
+	
+	public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(background, 0, 0, null);
+        for (int i = 0; i < gameSize; i++) {
+	        for (int j = 0; j < gameSize; j++) {
+	        	entities[j][i].paint(g);
+	        }
+		}
+	}
+	
 	public void update(){
 		ArrayList<Thread> t = new ArrayList<Thread>();
 		for (int i = 0; i < gameSize; i++) {
@@ -49,42 +105,12 @@ public class Level extends JPanel implements Serializable, Runnable{
 			t.get(i).start();
 		}
 	}
-	public Level(DiggerMain dm,Entity entities[][]){
-		initDm(dm);
-		this.entities=entities;
-		setLayout(new GridLayout(gameSize, gameSize, 0, 0));
-		setOpaque(true);
-		setBackground(Color.black);
-		for (int i = 0; i < gameSize; i++) {
-	        for (int j = 0; j < gameSize; j++) {
-	        	add(entities[j][i]);    	
-	        }
-		}
-		repaint();
-	}
-	public void initDm(DiggerMain dm){
-		this.dm=dm;
-	}
 	public void initEntities(){
 		for (int i=0;i<16;i++){
 			for (int j=0;j<16;j++){
 				entities[j][i].initDmLevel(dm);
 			}
 		}
-	}
-	
-	public void addHero(int x, int y) { //Puts a hero at the chosen location, for initial level setup.
-		remove(x+gameSize*y);
-		entities[x][y]= new Hero(dm, x, y);
-		add(entities[x][y],x+gameSize*y);
-//		entities[x][y].addKeyListener((Hero)entities[x][y]);
-		repaint();
-	}
-	public void addEmerald(int x, int y) { //Puts a Emerald at the chosen location, for initial level setup.
-		remove(x+gameSize*y);
-		entities[x][y]= new Entity(Color.green,100,dm, x, y);
-		add(entities[x][y],x+gameSize*y);
-		repaint();
 	}
 	
 	public void saveLevel(){
@@ -118,28 +144,83 @@ public class Level extends JPanel implements Serializable, Runnable{
 		}
 	}
 	
-	public void move(int x, int y, int dx, int dy){
-		if (!(x+dx==-1||x+dx==gameSize||y+dy==-1||y+dy==gameSize)){
-			Entity current = entities[x][y];
-			Entity next = entities[x+dx][y+dy];
-			if (next.color.equals(Color.red)||next.color.equals(Color.orange)) current.die();
-			else {
-				next.die();
-				remove(x+dx+gameSize*(y+dy));
-				entities[x+dx][y+dy] = new Hero(dm, x+dx, y+dy);
-				add(entities[x+dx][y+dy],(x+dx)+gameSize*(y+dy));
-				remove(x+gameSize*y);
-				entities[x][y] = new Entity(Color.black,0,dm, x, y);
-				add(entities[x][y],x+gameSize*y);
-				entities[x+dx][y+dy].requestFocusInWindow();
-			}
-		}
-	}
+	
 	@Override
 	public void run() {
-		try{
-			update();
+		try{update();
 			Thread.sleep(DELAY);
 		}catch (InterruptedException exception){}
+	}
+	
+	public void addHero(int x, int y) { //Puts a hero at the chosen location, for initial level setup.
+		entities[x][y]= new Hero(dm, x*imageSize, y*imageSize);
+		hero=entities[x][y];
+		repaint();
+	}
+	public void addEmerald(int x, int y) { //Puts a Emerald at the chosen location, for initial level setup.
+		entities[x][y]= new Entity(Color.green,100,dm, x*imageSize, y*imageSize,"Emerald");
+		repaint();
+	}
+	
+	
+	public void keybinding(){
+		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("U"), "levelUp");
+		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("D"), "levelDown");
+		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("UP"), "up");
+		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("DOWN"), "down");
+		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("LEFT"), "left");
+		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("RIGHT"), "right");
+		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("SPACE"), "shoot");
+		this.getActionMap().put("levelUp", new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+		    	if(current_level<saves.length){
+					dm.loadLevel(saves[current_level+1]);
+					current_level++;
+				}
+		    }
+		});
+		this.getActionMap().put("levelDown", new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+		    	if(current_level>0){
+					dm.loadLevel(saves[current_level-1]);
+					current_level--;
+					repaint();
+				}
+		    }
+		});
+		this.getActionMap().put("up", new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+//		    	move(hero.position[0],hero.position[1],0,-1);
+		    	hero.movement(0,-imageSize);
+				repaint();
+		    }
+		});
+		this.getActionMap().put("down", new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+//		    	move(hero.position[0],hero.position[1],0,1);
+		    	hero.movement(0,imageSize);
+				repaint();
+		    }
+		});
+		this.getActionMap().put("left", new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+//		    	move(hero.position[0],hero.position[1],-1,0);
+		    	hero.movement(-imageSize,0);
+				repaint();
+		    }
+		});
+		this.getActionMap().put("right", new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+//		    	move(hero.position[0],hero.position[1],1,0);
+		    	hero.movement(imageSize,0);
+				repaint();
+		    }
+		});
+		this.getActionMap().put("shoot", new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+//		    	hero.shoot();
+				repaint();
+		    }
+		});
 	}
 }

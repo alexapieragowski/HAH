@@ -9,7 +9,7 @@ public class Nobbin extends Enemies implements Runnable{
 	private static final int DELAY = 1000;
 	
 	public Nobbin(DiggerMain dm, int x_position, int y_position) {
-		super(Color.orange,250,dm,x_position,y_position);
+		super(Color.orange,250,dm,x_position,y_position,"Nobbin");
 		initDmLevel(dm);
 	}
 	public void initDmLevel(DiggerMain dm) {
