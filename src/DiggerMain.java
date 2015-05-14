@@ -9,7 +9,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
+/**
+ * 
+ * Is the main class for the Digger game, starts the game
+ * 
+ * @author heshelhj.
+ *         Created May 14, 2015.
+ */
 //Please let this work
 public class DiggerMain extends JFrame {
 	protected transient KeyListener keyListener = new KeyListener();
@@ -31,7 +37,11 @@ public class DiggerMain extends JFrame {
 //		Thread t = new Thread(mainFrame.currentLevel);
 //		t.start();
 	}
-	
+/**
+ * 	
+ * creates the main screen of the game
+ *
+ */
 	public DiggerMain() {
 		Container window = getContentPane();
 	    window.setLayout(new BorderLayout());
@@ -63,13 +73,22 @@ public class DiggerMain extends JFrame {
 		    mainscreen.requestFocusInWindow();
 	    }
 	}
-	
+/**
+ * 	
+ * handles incrementing the scoring of the game
+ *
+ * @param score
+ */
 	public void addScore(Integer score){
 		this.score.setText("Score: "+currentScore.toString()+" ");
 		this.currentScore += score;
 		this.score.setText("Score: "+currentScore.toString());
 	}
-	
+/**
+ * 	
+ * handles the decrementing of the number of lives of the hero
+ *
+ */
 	public void loseLife(){
 		this.currentLifes--;
 		this.lifes.setText("Lifes: "+currentLifes.toString());
