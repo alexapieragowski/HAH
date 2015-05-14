@@ -43,7 +43,6 @@ public class Entity extends Canvas{
 	    } catch (IOException e) {
 	    	System.out.println("Could not open picture file: " + picFile);
 	    }
-	    System.out.println("Loaded Image");
 	}
 	public void initDmLevel(DiggerMain dm) {
 		this.dm=dm;

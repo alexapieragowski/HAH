@@ -2,7 +2,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -29,7 +28,7 @@ public class Level extends JPanel implements Serializable, Runnable{
 	protected int gameSize = 16;
 	protected int imageSize = 32;
 	private String saves[]={"Level1","Level2","Level3"};
-	private int current_level=-1;
+	
 	protected Entity entities[][]= new Entity[gameSize][gameSize];
 	private static final int DELAY = 1000;
 	protected Entity hero;
@@ -38,7 +37,6 @@ public class Level extends JPanel implements Serializable, Runnable{
 	public Level(DiggerMain dm){
 		initDm(dm);
 		setOpaque(true);
-		setBackground(Color.black);
 		for (int i = 0; i < gameSize; i++) {
 	        for (int j = 0; j < gameSize; j++) {
 	        	entities[j][i] = new Entity(Color.gray,0,dm, j*imageSize, i*imageSize,"Dirt");//Fills the game with "Dirt"
@@ -57,9 +55,7 @@ public class Level extends JPanel implements Serializable, Runnable{
 		this.hero=hero;
 		initDm(dm);
 		this.entities=entities;
-		setLayout(new GridLayout(gameSize, gameSize, 0, 0));
 		setOpaque(true);
-		setBackground(Color.black);
 		for (int i = 0; i < gameSize; i++) {
 	        for (int j = 0; j < gameSize; j++) {
 	        	add(entities[j][i]);    	
@@ -79,7 +75,6 @@ public class Level extends JPanel implements Serializable, Runnable{
 	    } catch (IOException e) {
 	    	System.out.println("Could not open picture file: " + picFile);
 	    }
-	    System.out.println("Loaded Background");
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -173,17 +168,17 @@ public class Level extends JPanel implements Serializable, Runnable{
 		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("SPACE"), "shoot");
 		this.getActionMap().put("levelUp", new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
-		    	if(current_level<saves.length){
-					dm.loadLevel(saves[current_level+1]);
-					current_level++;
+		    	if(dm.currentLevelNumber<saves.length){
+					dm.loadLevel(saves[dm.currentLevelNumber+1]);
+					dm.currentLevelNumber++;
 				}
 		    }
 		});
 		this.getActionMap().put("levelDown", new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
-		    	if(current_level>0){
-					dm.loadLevel(saves[current_level-1]);
-					current_level--;
+		    	if(dm.currentLevelNumber>0){
+					dm.loadLevel(saves[dm.currentLevelNumber-1]);
+					dm.currentLevelNumber--;
 					repaint();
 				}
 		    }

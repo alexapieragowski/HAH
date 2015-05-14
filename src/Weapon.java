@@ -9,7 +9,7 @@ public class Weapon extends Entity implements java.awt.event.KeyListener, Runnab
 	KeyEvent e;
 
 	public Weapon(DiggerMain dm, int x_position, int y_position) {
-		super(Color.white, 0, dm, x_position, y_position);
+		super(Color.white, 0, dm, x_position, y_position,"bullet");
 		addKeyListener(this);
 	}
 	

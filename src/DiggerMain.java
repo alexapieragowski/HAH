@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 public class DiggerMain extends JFrame {
 	protected transient KeyListener keyListener = new KeyListener();
 	protected Level currentLevel;
+	protected int currentLevelNumber=-1;
 	private Integer currentScore = 0;
 	private JLabel score;
 	private Integer currentLifes = 3;
