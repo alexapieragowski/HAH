@@ -24,7 +24,7 @@ public class Weapon extends Entity implements Runnable {
 	public void updateThis(long time) {
 		sinceLast+=time;
 		if (sinceLast>DELAY){
-			howToMove();
+			//howToMove();
 			movement(dpos[0],dpos[1]);
 			dpos[0]=0;
 			dpos[1]=0;
