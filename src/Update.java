@@ -5,6 +5,9 @@ public class Update implements Runnable {
 	private static final int DELAY = 16;
 	
 	public Update(Level level) {
+		changeLevel(level);
+	}
+	public void changeLevel(Level level){
 		this.level=level;
 	}
 	

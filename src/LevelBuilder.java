@@ -184,7 +184,7 @@ public class LevelBuilder extends JPanel{
 				}
 				case "Nobbin":{
 					button[x][y].setBackground(Color.orange);
-					entities[x][y]=new Entity(Color.orange,75,dm,x*imageSize,y*imageSize,"Nobbin");//TODO Make Nobbin
+					entities[x][y]=new Nobbin(dm,x*imageSize,y*imageSize);
 					break;
 				}
 				case "Gold":{

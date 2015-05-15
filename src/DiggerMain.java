@@ -26,6 +26,7 @@ public class DiggerMain extends JFrame {
 	private Integer currentLifes = 3;
 	private JLabel lifes;
 	private JPanel mainscreen;
+	protected transient Update u;
 	
 	public static void main(String[] args) {
         DiggerMain mainFrame = new DiggerMain();
@@ -34,8 +35,7 @@ public class DiggerMain extends JFrame {
 		mainFrame.setVisible(true);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //		mainFrame.requestFocusInWindow();
-		Update u = new Update(mainFrame.currentLevel);
-		Thread t = new Thread(u);
+		Thread t = new Thread(mainFrame.u);
 		t.start();
 	}
 /**
@@ -73,6 +73,7 @@ public class DiggerMain extends JFrame {
 		    window.add(mainscreen,BorderLayout.CENTER);
 		    mainscreen.requestFocusInWindow();
 	    }
+	    u=new Update(currentLevel);
 	}
 /**
  * 	
@@ -120,6 +121,7 @@ public class DiggerMain extends JFrame {
 		remove(mainscreen);
 		mainscreen=currentLevel;
 		add(mainscreen,BorderLayout.CENTER);
+		u.changeLevel(currentLevel);
 		mainscreen.setFocusable(true);
 		currentLevel.setFocusable(true);
 		revalidate();
