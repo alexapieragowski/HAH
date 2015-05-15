@@ -5,6 +5,8 @@ import java.awt.Graphics;
 public class Weapon extends Entity implements Runnable {
 	private Hero hero;
 	private static final int DELAY = 1000;
+	private long sinceLast;
+	private int[] dpos = {0,0};
 //	KeyEvent e;
 
 	public Weapon(DiggerMain dm, int x_position, int y_position) {
@@ -19,10 +21,15 @@ public class Weapon extends Entity implements Runnable {
 		g.fillRect(0, 0, 15, 15);
 	}
 
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub.
-		
+	public void updateThis(long time) {
+		sinceLast+=time;
+		if (sinceLast>DELAY){
+			howToMove();
+			movement(dpos[0],dpos[1]);
+			dpos[0]=0;
+			dpos[1]=0;
+			sinceLast=0;
+		}
 	}
 	
 }
