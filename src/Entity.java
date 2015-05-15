@@ -73,6 +73,12 @@ public class Entity extends Canvas{
 		}
 	}
 	
+	//Entities will keep track of time since last update, this is how we will control speeds.
+	//This will be empty for things like emerald, dirt, or empty.
+	//For others it will probably just call move or howtomove, ect.
+	public void updateThis(long time) {
+	}
+	
 	public void die(){
 		awardPoints();
 	}

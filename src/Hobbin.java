@@ -2,11 +2,9 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 
-public class Hobbin extends Enemies implements Runnable{
-	private Entity entities[][];
+public class Hobbin extends Enemies{
 	private ArrayList<Integer> emeralds;
 	private int indexOfClosest;
-	private static final int DELAY = 1000;
 	
 	public Hobbin(DiggerMain dm, int x_position, int y_position) {
 		super(Color.red,250,dm,x_position,y_position, "Hobbin");
@@ -14,7 +12,6 @@ public class Hobbin extends Enemies implements Runnable{
 	}
 	
 	public void howToMove(){
-		entities=level.entities;
 		getEmeralds();
 		getClosestEmerald();
 		int x = emeralds.get(indexOfClosest);
@@ -34,9 +31,9 @@ public class Hobbin extends Enemies implements Runnable{
 		emeralds.clear();
 		for (int i=0;i<16;i++){
 			for (int j=0;j<16;j++){
-				if (entities[j][i].color.equals(Color.green)){
-					emeralds.add(entities[j][i].position[0]);
-					emeralds.add(entities[j][i].position[1]);
+				if (level.entities[j][i].color.equals(Color.green)){
+					emeralds.add(level.entities[j][i].position[0]);
+					emeralds.add(level.entities[j][i].position[1]);
 				}
 			}
 		}
@@ -51,12 +48,5 @@ public class Hobbin extends Enemies implements Runnable{
 				indexOfClosest=i;
 			}
 		}
-	}
-	@Override
-	public void run() {
-		try{
-			howToMove();
-			Thread.sleep(DELAY);
-		}catch (InterruptedException exception){}
 	}
 }

@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -23,14 +22,14 @@ import javax.swing.KeyStroke;
 
 
 
-public class Level extends JPanel implements Serializable, Runnable{
+public class Level extends JPanel implements Serializable{
 	private DiggerMain dm;
 	protected int gameSize = 16;
 	protected int imageSize = 32;
 	private String saves[]={"Level1","Level2","Level3"};
 	
 	protected Entity entities[][]= new Entity[gameSize][gameSize];
-	private static final int DELAY = 1000;
+//	private static final int DELAY = 1000;
 	protected Entity hero;
 	private transient BufferedImage background;
 	
@@ -76,7 +75,13 @@ public class Level extends JPanel implements Serializable, Runnable{
 	    	System.out.println("Could not open picture file: " + picFile);
 	    }
 	}
-	
+	public void initEntities(){
+		for (int i=0;i<16;i++){
+			for (int j=0;j<16;j++){
+				entities[j][i].initDmLevel(dm);
+			}
+		}
+	}	
 	public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, null);
@@ -87,26 +92,20 @@ public class Level extends JPanel implements Serializable, Runnable{
 		}
 	}
 	
-	public void update(){
-		ArrayList<Thread> t = new ArrayList<Thread>();
-		for (int i = 0; i < gameSize; i++) {
-	        for (int j = 0; j < gameSize; j++) {
-	        	if (entities[j][i].color==Color.red){
-	        		t.add(new Thread((Hobbin)entities[j][i]));
-	        	}
-	        }
-		}
-		for (int i=0;i<t.size();i++){
-			t.get(i).start();
-		}
-	}
-	public void initEntities(){
-		for (int i=0;i<16;i++){
-			for (int j=0;j<16;j++){
-				entities[j][i].initDmLevel(dm);
-			}
-		}
-	}
+//	public void update(){
+//		ArrayList<Thread> t = new ArrayList<Thread>();
+//		for (int i = 0; i < gameSize; i++) {
+//	        for (int j = 0; j < gameSize; j++) {
+//	        	if (entities[j][i].color==Color.red){
+//	        		t.add(new Thread((Hobbin)entities[j][i]));
+//	        	}
+//	        }
+//		}
+//		for (int i=0;i<t.size();i++){
+//			t.get(i).start();
+//		}
+//	}
+	
 	
 	public void saveLevel(){
 		new File("Saves").mkdirs();
@@ -127,6 +126,10 @@ public class Level extends JPanel implements Serializable, Runnable{
 	/*
 	 * Disables directory navigation for save/load windows,
 	 * because the user cannot be trusted with that grand power.
+	 * (In all honesty, this is because save file ignores whatever
+	 * directory you try to put it in since we want it kept with
+	 * our project. It gets very confusing when saves aren't actually 
+	 * in the directory you put them in so take away features from user) 
 	 */
 	private void disablestuff(Container container){
 		Component c[] = container.getComponents();
@@ -140,13 +143,15 @@ public class Level extends JPanel implements Serializable, Runnable{
 	}
 	
 	
-	@Override
-	public void run() {
-		try{update();
-			Thread.sleep(DELAY);
-		}catch (InterruptedException exception){}
-	}
+//	@Override
+//	public void run() {
+//		try{
+//			Update u=new Update(this);
+//			Thread.sleep(DELAY);
+//		}catch (InterruptedException exception){}
+//	}
 	
+	//adding things for Testing
 	public void addHero(int x, int y) { //Puts a hero at the chosen location, for initial level setup.
 		entities[x][y]= new Hero(dm, x*imageSize, y*imageSize);
 		hero=entities[x][y];
