@@ -29,6 +29,7 @@ public class Nobbin extends Enemies{
 		ArrayList<Node> successors;
 		Node current = null;
 		int currentf;
+		boolean isContinue;
 		while (open.size()!=0){
 			currentf=-1;
 			for (int i=0;i<open.size();i++){
@@ -46,9 +47,24 @@ public class Nobbin extends Enemies{
 			closed.add(current);
 			successors=getNeighbors(current);
 			for (Node n : successors){
-				if (closed.contains(n)) continue;
-				if (!open.contains(n)) open.add(n);
+				isContinue=false;
+				for (int i=0;i<closed.size();i++){
+					if (closed.get(i).currentx==n.currentx && closed.get(i).currenty==n.currenty) {
+						isContinue=true;
+						break;
+					}
+				}
+				if(isContinue) continue;
+				for (int i=0;i<open.size();i++){
+					if (open.get(i).currentx==n.currentx && open.get(i).currenty==n.currenty) {
+						isContinue=true;
+						break;
+					}
+				}
+				if(isContinue) continue;
+				open.add(n);
 			}
+
 		}
 	}
 	private ArrayList<Node> getNeighbors(Node n){
