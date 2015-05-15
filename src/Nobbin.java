@@ -37,7 +37,7 @@ public class Nobbin extends Enemies{
 					currentf=current.fScore;
 				}
 			}
-			if (current.equals(hero)){
+			if (current.currentx==hero.position[0]&&current.currenty==hero.position[1]){
 				path.clear();
 				getpath(current);
 				break;
@@ -53,16 +53,20 @@ public class Nobbin extends Enemies{
 	}
 	private ArrayList<Node> getNeighbors(Node n){
 		ArrayList<Node> successors = new ArrayList<Node>();
-		for (int i = n.currentx/level.imageSize-1;i<n.currentx/level.imageSize+1;i+=2){
-			Node newN = new Node(level.entities[i][n.currenty/level.imageSize],n);
-			if(newN.entity.spriteName.equals("Nothing")|| newN.entity.spriteName.equals("Hero")){
-				successors.add(newN);
+		for (int i = n.currentx/level.imageSize-1;i<=n.currentx/level.imageSize+1;i+=2){
+			if(0<i&&i<level.gameSize){
+				Node newN = new Node(level.entities[i][n.currenty/level.imageSize],n);
+				if(newN.entity.spriteName.equals("Empty")|| newN.entity.spriteName.equals("Hero")){
+					successors.add(newN);
+				}
 			}
 		}
-		for (int j = n.currenty/level.imageSize-1;j<n.currenty/level.imageSize+1;j+=2){
-			Node newN = new Node(level.entities[n.currentx/level.imageSize][j],n);
-			if(newN.entity.spriteName.equals("Nothing")|| newN.entity.spriteName.equals("Hero")){
-				successors.add(newN);
+		for (int j = n.currenty/level.imageSize-1;j<=n.currenty/level.imageSize+1;j+=2){
+			if(0<j&&j<level.gameSize){
+				Node newN = new Node(level.entities[n.currentx/level.imageSize][j],n);
+				if(newN.entity.spriteName.equals("Empty")|| newN.entity.spriteName.equals("Hero")){
+					successors.add(newN);
+				}
 			}
 		}		
 		return successors;
@@ -75,9 +79,8 @@ public class Nobbin extends Enemies{
 		}
 	}
 	public void howToMove(){
-		Entity cur = level.hero;
-		if (path.size()==0||!(cur.position[0]==goalx && cur.position[1]==goaly)){
-			hero=cur;
+		hero = level.hero;
+		if (path.size()==0||!(hero.position[0]==goalx && hero.position[1]==goaly)){
 			goalx = hero.position[0];
 			goaly = hero.position[1];
 			aStar();
@@ -95,7 +98,7 @@ public class Nobbin extends Enemies{
 		}
 	}
 	
-	@SuppressWarnings("unused")
+	
 	private class Node{
 		public Entity entity;
 		public Node parent;
@@ -119,21 +122,23 @@ public class Nobbin extends Enemies{
 		}
 		private void gScore(){
 			if (parent==null) gScore=0;
-			else gScore=parent.gScore+distance(parent==null);
+			else gScore=parent.gScore+distance(false);
 		}
 		private void fScore(){
 			gScore();
 			fScore=gScore+distance(parent==null);
 		}
 		private int distance(boolean isStart){//Manhattan Distance
+			int distx;
+			int disty;
 			if (isStart){
-				int dx = Math.abs(goalx-currentx);
-				int dy = Math.abs(goaly-currenty);
+				distx = Math.abs(goalx-currentx);
+				disty = Math.abs(goaly-currenty);
 			}else{
-				int dx = Math.abs(parent.currentx-currentx);
-				int dy = Math.abs(parent.currenty-currenty);
+				distx = Math.abs(parent.currentx-currentx);
+				disty = Math.abs(parent.currenty-currenty);
 			}
-			return dx+dy;
+			return distx+disty;
 		}
 	}
 }
