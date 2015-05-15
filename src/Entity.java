@@ -57,25 +57,31 @@ public class Entity extends Canvas{
 		
 	}
 	public void movement(int dx, int dy) {
-		Entity next;
-		if (level==null) System.out.println("Null");
-		if (position[0]+dx<0||position[0]+dx>(level.gameSize-1)*level.imageSize||position[1]+dy<0||position[1]+dy>(level.gameSize-1)*level.imageSize) next=null;
-		else next = level.entities[(position[0]+dx)/level.imageSize][(position[1]+dy)/level.imageSize];
-		if (next!=null){
-			if (killPriority>next.killPriority){
-				next.die();
-				level.entities[(position[0]+dx)/level.imageSize][(position[1]+dy)/level.imageSize]=this;
-				level.entities[(position[0])/level.imageSize][(position[1])/level.imageSize]= new Entity(Color.black,0,dm,position[0],position[0],"Empty");
-				position[0]+=dx;
-				position[1]+=dy;
+		if (!(dx==0&&dy==0)){
+			Entity next;
+			if (level==null) System.out.println("Null");
+			if (position[0]+dx<0||position[0]+dx>(level.gameSize-1)*level.imageSize||position[1]+dy<0||position[1]+dy>(level.gameSize-1)*level.imageSize) next=null;
+			else next = level.entities[(position[0]+dx)/level.imageSize][(position[1]+dy)/level.imageSize];
+			if (next!=null){
+				if (killPriority>next.killPriority){
+					next.die();
+					level.entities[(position[0]+dx)/level.imageSize][(position[1]+dy)/level.imageSize]=this;
+					level.entities[(position[0])/level.imageSize][(position[1])/level.imageSize]= new Entity(Color.black,0,dm,position[0],position[0],"Empty");
+					position[0]+=dx;
+					position[1]+=dy;
+				}
+				else die();
 			}
-			else die();
 		}
 	}
 	
-	//Entities will keep track of time since last update, this is how we will control speeds.
-	//This will be empty for things like emerald, dirt, or empty.
-	//For others it will probably just call move or howtomove, ect.
+	
+	/**
+	 * Entities will keep track of time since last update, this is how we will control speeds.
+	 * This will be empty for things like emerald, dirt, or empty.
+	 * For others it will probably just call move or howtomove, ect.
+	 * @param time long time since last update.
+	 */
 	public void updateThis(long time) {
 	}
 	

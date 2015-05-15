@@ -34,8 +34,9 @@ public class DiggerMain extends JFrame {
 		mainFrame.setVisible(true);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //		mainFrame.requestFocusInWindow();
-//		Thread t = new Thread(mainFrame.currentLevel);
-//		t.start();
+		Update u = new Update(mainFrame.currentLevel);
+		Thread t = new Thread(u);
+		t.start();
 	}
 /**
  * 	

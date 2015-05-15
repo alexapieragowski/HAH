@@ -27,7 +27,6 @@ public class Level extends JPanel implements Serializable{
 	protected int gameSize = 16;
 	protected int imageSize = 32;
 	private String saves[]={"Level1","Level2","Level3"};
-	
 	protected Entity entities[][]= new Entity[gameSize][gameSize];
 //	private static final int DELAY = 1000;
 	protected Entity hero;
@@ -39,14 +38,19 @@ public class Level extends JPanel implements Serializable{
 		for (int i = 0; i < gameSize; i++) {
 	        for (int j = 0; j < gameSize; j++) {
 	        	entities[j][i] = new Entity(Color.gray,0,dm, j*imageSize, i*imageSize,"Dirt");//Fills the game with "Dirt"
+	        	entities[j][i].initDmLevel(dm);
 	        	add(entities[j][i]);    	
 	        }
+		}
+		for (int i = 0;i<gameSize;i++){
+			entities[i][5]= new Entity(Color.black,0,dm,i*imageSize,5*imageSize,"Empty");
 		}
 		addHero(5,5);
 		for (int i = 0; i < 3;i++){
 			addEmerald(i+2,7);
 		}
 		entities[11][14] = new Hobbin(dm,11*imageSize,14*imageSize);
+		entities[15][5] = new Nobbin(dm,15*imageSize,5*imageSize);
 		keybinding();
 	}
 	
@@ -191,35 +195,40 @@ public class Level extends JPanel implements Serializable{
 		this.getActionMap().put("up", new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
 //		    	move(hero.position[0],hero.position[1],0,-1);
-		    	hero.movement(0,-imageSize);
-				repaint();
+//		    	hero.movement(0,-imageSize);
+		    	((Hero)hero).dpos[1]=-imageSize;
+//				repaint();
 		    }
 		});
 		this.getActionMap().put("down", new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
 //		    	move(hero.position[0],hero.position[1],0,1);
-		    	hero.movement(0,imageSize);
-				repaint();
+//		    	hero.movement(0,imageSize);
+		    	((Hero)hero).dpos[1]=imageSize;
+//				repaint();
 		    }
 		});
 		this.getActionMap().put("left", new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
 //		    	move(hero.position[0],hero.position[1],-1,0);
-		    	hero.movement(-imageSize,0);
-				repaint();
+//		    	hero.movement(-imageSize,0);
+		    	((Hero)hero).dpos[0]=-imageSize;
+//				repaint();
 		    }
 		});
 		this.getActionMap().put("right", new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
 //		    	move(hero.position[0],hero.position[1],1,0);
-		    	hero.movement(imageSize,0);
-				repaint();
+//		    	hero.movement(imageSize,0);
+		    	((Hero)hero).dpos[0]=imageSize;
+//				repaint();
 		    }
 		});
 		this.getActionMap().put("shoot", new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
+		    	((Hero)hero).shoot=true;
 //		    	hero.shoot();
-				repaint();
+//				repaint();
 		    }
 		});
 	}

@@ -3,12 +3,29 @@ import java.awt.Color;
 
 public class Hero extends Entity {
 	int facing = 0;
+	private static final long DELAY = 300;
+	private long sinceLast;
+	protected int[] dpos = {0,0};
+	protected boolean shoot;
 
 	public Hero(DiggerMain dm, int x_position, int y_position) {
 		super(Color.blue, 0, dm, x_position, y_position, "Hero");
+		sinceLast=DELAY;
+		shoot = false;
 //		addKeyListener(this);
 	}
+	public void updateThis(long time) {//TODO add shoot bullet
+		sinceLast+=time;
+		if (sinceLast>DELAY){
+			movement(dpos[0],dpos[1]);
+			dpos[0]=0;
+			dpos[1]=0;
+			shoot=false;
+			sinceLast=0;
+		}
+	}
 	
+	//Why is this here when we could just use hero.position?
 	public int[] position(){
 		return this.position();
 	}

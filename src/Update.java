@@ -2,7 +2,7 @@
 
 public class Update implements Runnable {
 	private Level level;
-	private static final int DELAY = 33;
+	private static final int DELAY = 16;
 	
 	public Update(Level level) {
 		this.level=level;
@@ -20,9 +20,10 @@ public class Update implements Runnable {
 				last=current;
 				for (Entity[] e : level.entities){
 					for (Entity entity : e){
-//						entity.update(inc);
+						entity.updateThis(inc);
 					}
 				}
+				level.repaint();
 				Thread.sleep(DELAY);
 			}
 		}catch (InterruptedException exception){}

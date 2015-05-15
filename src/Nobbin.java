@@ -6,17 +6,21 @@ public class Nobbin extends Enemies{
 	private Entity hero;
 	private int goalx;
 	private int goaly;
+	private ArrayList<int[]> path = new ArrayList<int[]>();
+	private static final long DELAY = 250;
+	private long sinceLast;
+	private int[] dpos = {0,0};
 	
 	public Nobbin(DiggerMain dm, int x_position, int y_position) {
 		super(Color.orange,250,dm,x_position,y_position,"Nobbin");
-		initDmLevel(dm);
 	}
-	public void initDmLevel(DiggerMain dm) {
+	public void myInitDmLevel(DiggerMain dm) {
 		this.dm=dm;
 		level=dm.currentLevel;
 		hero=level.hero;
 		goalx = hero.position[0];
 		goaly = hero.position[1];
+		sinceLast=DELAY;
 	}
 	private void aStar(){//Massive overkill?
 		ArrayList<Node> closed = new ArrayList<Node>();
@@ -34,6 +38,7 @@ public class Nobbin extends Enemies{
 				}
 			}
 			if (current.equals(hero)){
+				path.clear();
 				getpath(current);
 				break;
 			}
@@ -63,21 +68,30 @@ public class Nobbin extends Enemies{
 		return successors;
 	}
 	private void getpath(Node n){
-		//iterate through node and all parents
-		//for each save the dx,dy as a pair into some sort
-		//of iterable that how to move can just remove
-		//from list and apply to move.
+		while (n!=null){
+			int[] delta = {n.dx,n.dy};
+			path.add(delta);
+			n=n.parent;
+		}
 	}
 	public void howToMove(){
 		Entity cur = level.hero;
-		//check if path is null, if so do aStar, else do below.
-		if (!(cur.position[0]==goalx && cur.position[1]==goaly)){
+		if (path.size()==0||!(cur.position[0]==goalx && cur.position[1]==goaly)){
+			hero=cur;
 			goalx = hero.position[0];
 			goaly = hero.position[1];
 			aStar();
 		}
-		else{
-			//Next step in path.
+		if (path.size()!=0) dpos = path.remove(path.size()-1);
+	}
+	public void updateThis(long time) {
+		sinceLast+=time;
+		if (sinceLast>DELAY){
+			howToMove();
+			movement(dpos[0],dpos[1]);
+			dpos[0]=0;
+			dpos[1]=0;
+			sinceLast=0;
 		}
 	}
 	
