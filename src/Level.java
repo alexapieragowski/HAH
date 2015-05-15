@@ -49,8 +49,7 @@ public class Level extends JPanel implements Serializable{
 		for (int i = 0; i < 3;i++){
 			addEmerald(i+2,7);
 		}
-//		remove(entities[14][14]);
-		entities[15][15]=null;
+
 		entities[11][14] = new Hobbin(dm,11*imageSize,14*imageSize);
 		entities[15][5] = new Nobbin(dm,15*imageSize,5*imageSize);
 		keybinding();
