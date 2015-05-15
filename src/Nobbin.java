@@ -64,13 +64,14 @@ public class Nobbin extends Enemies{
 				if(isContinue) continue;
 				open.add(n);
 			}
-
+			System.out.println(open.size());
+			System.out.println(closed.size());
 		}
 	}
 	private ArrayList<Node> getNeighbors(Node n){
 		ArrayList<Node> successors = new ArrayList<Node>();
 		for (int i = n.currentx/level.imageSize-1;i<=n.currentx/level.imageSize+1;i+=2){
-			if(0<i&&i<level.gameSize){
+			if(0<=i&&i<level.gameSize){
 				Node newN = new Node(level.entities[i][n.currenty/level.imageSize],n);
 				if(newN.entity.spriteName.equals("Empty")|| newN.entity.spriteName.equals("Hero")){
 					successors.add(newN);
@@ -78,7 +79,7 @@ public class Nobbin extends Enemies{
 			}
 		}
 		for (int j = n.currenty/level.imageSize-1;j<=n.currenty/level.imageSize+1;j+=2){
-			if(0<j&&j<level.gameSize){
+			if(0<=j&&j<level.gameSize){
 				Node newN = new Node(level.entities[n.currentx/level.imageSize][j],n);
 				if(newN.entity.spriteName.equals("Empty")|| newN.entity.spriteName.equals("Hero")){
 					successors.add(newN);
