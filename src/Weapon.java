@@ -39,29 +39,39 @@ public class Weapon extends Entity {
 	}
 	
 	public void move(){
-		if (facing == "right") { 
-			if (position[0]/level.imageSize+1<level.gameSize){
+		if (facing == "right") {
+			if (position[0]/level.imageSize+1<level.gameSize && isValid(facing)){
 				this.movement(level.imageSize, 0);
 			}else level.entities[position[0]/level.imageSize][position[1]/level.imageSize]=new Entity(Color.black,0,dm,position[0],position[1],"Empty");
 		}
 		if (facing == "left") {
-			if (position[0]/level.imageSize-1>=0){
+			if (position[0]/level.imageSize-1>=0 && isValid(facing)){
 				this.movement(-level.imageSize, 0);
 			}else level.entities[position[0]/level.imageSize][position[1]/level.imageSize]=new Entity(Color.black,0,dm,position[0],position[1],"Empty");
 			
 		}
 		if (facing == "up") { 
-			if (position[1]/level.imageSize-1>=0){
+			if (position[1]/level.imageSize-1>=0 && isValid(facing)){
 				this.movement(0, -level.imageSize);
 			}else level.entities[position[0]/level.imageSize][position[1]/level.imageSize]=new Entity(Color.black,0,dm,position[0],position[1],"Empty");
 		}
 		if (facing == "down") {
-			if (position[1]/level.imageSize+1<level.gameSize){
+			if (position[1]/level.imageSize+1<level.gameSize && isValid(facing)){
 				this.movement(0, level.imageSize);
 			}else level.entities[position[0]/level.imageSize][position[1]/level.imageSize]=new Entity(Color.black,0,dm,position[0],position[1],"Empty");
 		}
 	}
-	
+	private boolean isValid(String facing){
+		String sprite;
+		switch (facing){
+			case "right":{sprite = level.entities[position[0]/level.imageSize+1][position[1]/level.imageSize].spriteName;	break; }
+			case "left":{sprite = level.entities[position[0]/level.imageSize-1][position[1]/level.imageSize].spriteName;	break; }
+			case "up":{sprite = level.entities[position[0]/level.imageSize][position[1]/level.imageSize-1].spriteName;	break; }
+			case "down":{sprite = level.entities[position[0]/level.imageSize][position[1]/level.imageSize+1].spriteName;	break; }
+			default: return false;
+		}
+		return sprite.equals("Empty")||sprite.equals("Nobbin")||sprite.equals("Hobbin");
+	}
 	
 
 	
