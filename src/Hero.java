@@ -4,7 +4,7 @@ import java.awt.Color;
 public class Hero extends Entity {
 	String facing = "right";
 	private static final long DELAY = 300;
-	private static final long SHOOTDELAY = 1000;
+	private static final long SHOOTDELAY = 2250;
 	private long sinceLast;
 	private long sinceLastShoot;
 	protected int[] dpos = {0,0};

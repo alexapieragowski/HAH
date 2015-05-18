@@ -16,7 +16,7 @@ public class Entity extends Canvas{
 	protected int position[] = new int[2];
 	protected Color color;
 	protected Level level;
-	private transient BufferedImage sprite;
+	protected transient BufferedImage sprite;
 	protected String spriteName;
 	protected int killPriority;
 	

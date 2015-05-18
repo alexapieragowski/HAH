@@ -1,9 +1,13 @@
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 
 
 public class Weapon extends Entity {
 	private static final int DELAY = 150;
 	private long sinceLast;
+	private long spin;
 	private int[] dpos = {0,0};
 	private String facing;
 	public Weapon(DiggerMain dm, int x_position, int y_position, String facing) {
@@ -14,12 +18,23 @@ public class Weapon extends Entity {
 
 	public void updateThis(long time) {
 		sinceLast+=time;
+		spin+=time;
 		if (sinceLast>DELAY){
 			//howToMove();
 			move();
 			dpos[0]=0;
 			dpos[1]=0;
 			sinceLast=0;
+		}
+	}
+	public void paint(Graphics g){ //Eventually these will be sprites instead of rectangles.
+		super.paint(g);
+		if (spin>DELAY/2){
+			AffineTransform transform = new AffineTransform();
+			transform.rotate(Math.PI/2,sprite.getWidth()/2,sprite.getHeight()/2);
+			AffineTransformOp op = new AffineTransformOp(transform,AffineTransformOp.TYPE_BILINEAR);
+			sprite=op.filter(sprite,null);
+			spin=0;
 		}
 	}
 	
