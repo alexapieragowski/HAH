@@ -25,7 +25,7 @@ public class Hobbin extends Enemies{
 				if (position[0]>x) dpos[0]=-level.imageSize;
 				else dpos[0]=level.imageSize;
 			}
-			if (position[1]!=y){
+			else if (position[1]!=y){
 				if (position[1]>y) dpos[1]=-level.imageSize;
 				else dpos[1]=level.imageSize;
 			}
@@ -56,7 +56,7 @@ public class Hobbin extends Enemies{
 		double distanceOfClosest=2000;//Arbitrarily large number
 		double distance;
 		for (int i=0;i<emeralds.size();i+=2){
-			distance=Math.sqrt(Math.pow((emeralds.get(i)+this.position[0]),2)+Math.pow((emeralds.get(i+1)+this.position[1]),2));
+			distance=Math.sqrt(Math.pow((emeralds.get(i)-this.position[0]),2)+Math.pow((emeralds.get(i+1)-this.position[1]),2));
 			if (distance<distanceOfClosest){
 				distanceOfClosest=distance;
 				indexOfClosest=i;

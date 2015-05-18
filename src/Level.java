@@ -194,41 +194,31 @@ public class Level extends JPanel implements Serializable{
 		});
 		this.getActionMap().put("up", new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
-//		    	move(hero.position[0],hero.position[1],0,-1);
-//		    	hero.movement(0,-imageSize);
 		    	((Hero)hero).dpos[1]=-imageSize;
-//				repaint();
+		    	((Hero)hero).dpos[0]=0;
 		    }
 		});
 		this.getActionMap().put("down", new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
-//		    	move(hero.position[0],hero.position[1],0,1);
-//		    	hero.movement(0,imageSize);
 		    	((Hero)hero).dpos[1]=imageSize;
-//				repaint();
+		    	((Hero)hero).dpos[0]=0;
 		    }
 		});
 		this.getActionMap().put("left", new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
-//		    	move(hero.position[0],hero.position[1],-1,0);
-//		    	hero.movement(-imageSize,0);
 		    	((Hero)hero).dpos[0]=-imageSize;
-//				repaint();
+		    	((Hero)hero).dpos[1]=0;
 		    }
 		});
 		this.getActionMap().put("right", new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
-//		    	move(hero.position[0],hero.position[1],1,0);
-//		    	hero.movement(imageSize,0);
 		    	((Hero)hero).dpos[0]=imageSize;
-//				repaint();
+		    	((Hero)hero).dpos[1]=0;
 		    }
 		});
 		this.getActionMap().put("shoot", new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
 		    	((Hero)hero).shoot=true;
-//		    	hero.shoot();
-//				repaint();
 		    }
 		});
 	}

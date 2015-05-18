@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 
 public class Nobbin extends Enemies{
@@ -22,73 +23,49 @@ public class Nobbin extends Enemies{
 		goaly = hero.position[1];
 		sinceLast=DELAY;
 	}
-	private void aStar(){//Massive overkill?
-		ArrayList<Node> closed = new ArrayList<Node>();
-		ArrayList<Node> open = new ArrayList<Node>();
+	private Node aStar(){//Massive overkill?
+		boolean[][] visited = new boolean[16][16];
+		PriorityQueue<Node> open = new PriorityQueue<Node>();
+		Node current;
+		
 		open.add(new Node(this,null));
-		ArrayList<Node> successors;
-		Node current = null;
-		int currentf;
-		boolean isContinue;
+		
 		while (open.size()!=0){
-			currentf=-1;
-			for (int i=0;i<open.size();i++){
-				if (currentf==-1||open.get(i).fScore<currentf) {
-					current=open.get(i);
-					currentf=current.fScore;
-				}
-			}
-			if (current.currentx==hero.position[0]&&current.currenty==hero.position[1]){
-				path.clear();
-				getpath(current);
-				break;
-			}
-			open.remove(current);
-			closed.add(current);
-			successors=getNeighbors(current);
-			for (Node n : successors){
-				isContinue=false;
-				for (int i=0;i<closed.size();i++){
-					if (closed.get(i).currentx==n.currentx && closed.get(i).currenty==n.currenty) {
-						isContinue=true;
-						break;
-					}
-				}
-				if(isContinue) continue;
-				for (int i=0;i<open.size();i++){
-					if (open.get(i).currentx==n.currentx && open.get(i).currenty==n.currenty) {
-						isContinue=true;
-						break;
-					}
-				}
-				if(isContinue) continue;
+			current=open.poll();
+			if (current.currentx==hero.position[0]&&current.currenty==hero.position[1]) return current;
+			visited[current.currentx/level.imageSize][current.currenty/level.imageSize]=true;
+			
+			for (Node n : getNeighbors(current,visited)){
+				visited[n.currentx / level.imageSize][n.currenty / level.imageSize] = true;
 				open.add(n);
 			}
-			System.out.println(open.size());
-			System.out.println(closed.size());
 		}
+		return null;
 	}
-	private ArrayList<Node> getNeighbors(Node n){
-		ArrayList<Node> successors = new ArrayList<Node>();
+	
+	private PriorityQueue<Node> getNeighbors(Node n,boolean visited[][]){
+		PriorityQueue<Node> successors = new PriorityQueue<Node>();
+		Node newN;
+		boolean isValid;
 		for (int i = n.currentx/level.imageSize-1;i<=n.currentx/level.imageSize+1;i+=2){
-			if(0<=i&&i<level.gameSize){
-				Node newN = new Node(level.entities[i][n.currenty/level.imageSize],n);
-				if(newN.entity.spriteName.equals("Empty")|| newN.entity.spriteName.equals("Hero")){
-					successors.add(newN);
-				}
+			if(0<=i&&i<level.gameSize){//Checks that neighbor is in map
+				newN = new Node(level.entities[i][n.currenty/level.imageSize],n);
+				isValid = (newN.entity.spriteName.equals("Empty") || newN.entity.spriteName.equals("Hero"))
+						&& !visited[newN.currentx / level.imageSize][newN.currenty / level.imageSize];
+				if(isValid) successors.add(newN);
 			}
 		}
 		for (int j = n.currenty/level.imageSize-1;j<=n.currenty/level.imageSize+1;j+=2){
-			if(0<=j&&j<level.gameSize){
-				Node newN = new Node(level.entities[n.currentx/level.imageSize][j],n);
-				if(newN.entity.spriteName.equals("Empty")|| newN.entity.spriteName.equals("Hero")){
-					successors.add(newN);
-				}
+			if(0<=j&&j<level.gameSize){//Checks that neighbor is in map
+				newN = new Node(level.entities[n.currentx/level.imageSize][j],n);
+				isValid = (newN.entity.spriteName.equals("Empty") || newN.entity.spriteName.equals("Hero"))
+						&& !visited[newN.currentx / level.imageSize][newN.currenty / level.imageSize];
+				if(isValid)	successors.add(newN);
 			}
-		}		
+		}
 		return successors;
 	}
-	private void getpath(Node n){
+	private void getPath(Node n){
 		while (n!=null){
 			int[] delta = {n.dx,n.dy};
 			path.add(delta);
@@ -100,7 +77,8 @@ public class Nobbin extends Enemies{
 		if (path.size()==0||!(hero.position[0]==goalx && hero.position[1]==goaly)){
 			goalx = hero.position[0];
 			goaly = hero.position[1];
-			aStar();
+			path.clear();
+			getPath(aStar());
 		}
 		if (path.size()!=0) dpos = path.remove(path.size()-1);
 	}
@@ -116,7 +94,7 @@ public class Nobbin extends Enemies{
 	}
 	
 	
-	private class Node{
+	private class Node implements Comparable<Node>{
 		public Entity entity;
 		public Node parent;
 		public int gScore;
@@ -137,25 +115,34 @@ public class Nobbin extends Enemies{
 			}
 			fScore();
 		}
-		private void gScore(){
-			if (parent==null) gScore=0;
-			else gScore=parent.gScore+distance(false);
+		private int gScore(){//Cost to get here from start
+			if (parent!=null) gScore=parent.gScore+distanceFromPrevious();
+			else gScore=distanceFromPrevious();
+			return gScore;
+		}
+		private int hScore(){//Cost estimate from here to the goal
+			return distanceToGoal();
 		}
 		private void fScore(){
-			gScore();
-			fScore=gScore+distance(parent==null);
+			fScore=gScore()+hScore();
 		}
-		private int distance(boolean isStart){//Manhattan Distance
-			int distx;
-			int disty;
-			if (isStart){
-				distx = Math.abs(goalx-currentx);
-				disty = Math.abs(goaly-currenty);
-			}else{
-				distx = Math.abs(parent.currentx-currentx);
-				disty = Math.abs(parent.currenty-currenty);
+		
+		private int distanceFromPrevious(){//Manhattan Distance
+			if (parent!=null){
+				int distx = Math.abs(parent.currentx-currentx);
+				int	disty = Math.abs(parent.currenty-currenty);
+				return distx+disty;
 			}
+			return 0;
+		}
+		private int distanceToGoal(){//Manhattan Distance
+			int distx = Math.abs(goalx-currentx);
+			int	disty = Math.abs(goaly-currenty);
 			return distx+disty;
+		}
+		
+		public int compareTo(Node o) {
+			return fScore-o.fScore;
 		}
 	}
 }

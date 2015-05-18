@@ -66,7 +66,7 @@ public class Entity extends Canvas{
 				if (killPriority>next.killPriority){
 					next.die();
 					level.entities[(position[0]+dx)/level.imageSize][(position[1]+dy)/level.imageSize]=this;
-					level.entities[(position[0])/level.imageSize][(position[1])/level.imageSize]= new Entity(Color.black,0,dm,position[0],position[0],"Empty");
+					level.entities[(position[0])/level.imageSize][(position[1])/level.imageSize]= new Entity(Color.black,0,dm,position[0],position[1],"Empty");
 					position[0]+=dx;
 					position[1]+=dy;
 				}
