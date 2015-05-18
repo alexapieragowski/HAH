@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -166,6 +167,18 @@ public class Level extends JPanel implements Serializable{
 		repaint();
 	}
 	
+	public ArrayList<Integer> getEmeralds(){
+		ArrayList<Integer> emeralds = new ArrayList<Integer>();
+		for (int i=0;i<16;i++){
+			for (int j=0;j<16;j++){
+				if (entities[j][i].color.equals(Color.green)){
+					emeralds.add(entities[j][i].position[0]);
+					emeralds.add(entities[j][i].position[1]);
+				}
+			}
+		}
+		return emeralds;
+	}
 	
 	public void keybinding(){
 		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("U"), "levelUp");

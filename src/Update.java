@@ -27,6 +27,7 @@ public class Update implements Runnable {
 					}
 				}
 				level.repaint();
+				boolean nextLevel = level.getEmeralds().size()==0;
 				Thread.sleep(DELAY);
 			}
 		}catch (InterruptedException exception){}

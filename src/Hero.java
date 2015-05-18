@@ -51,6 +51,7 @@ public class Hero extends Entity {
 				case "down": {y = level.imageSize; break;}
 			}
 			Weapon weapon = new Weapon(dm, x+position[0], y+position[1],facing);
+			level.entities[(x+position[0])/level.imageSize][(y+position[1])/level.imageSize].die();
 			level.entities[(x+position[0])/level.imageSize][(y+position[1])/level.imageSize] = weapon;
 		}
 	}

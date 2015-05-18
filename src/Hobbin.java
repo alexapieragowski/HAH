@@ -16,7 +16,7 @@ public class Hobbin extends Enemies{
 	}
 	
 	public void howToMove(){
-		getEmeralds();
+		emeralds = level.getEmeralds();
 		getClosestEmerald();
 		if (emeralds.size()!=0){
 			int x = emeralds.get(indexOfClosest);
@@ -29,6 +29,7 @@ public class Hobbin extends Enemies{
 				if (position[1]>y) dpos[1]=-level.imageSize;
 				else dpos[1]=level.imageSize;
 			}
+			if(level.entities[(position[0]+dpos[0])/level.imageSize][(position[1]+dpos[1])/level.imageSize].spriteName.equals("Emerald")) dm.addScore(-100);
 		}
 	}
 	public void updateThis(long time) {
@@ -41,17 +42,7 @@ public class Hobbin extends Enemies{
 			sinceLast=0;
 		}
 	}
-	public void getEmeralds(){
-		emeralds.clear();
-		for (int i=0;i<16;i++){
-			for (int j=0;j<16;j++){
-				if (level.entities[j][i].color.equals(Color.green)){
-					emeralds.add(level.entities[j][i].position[0]);
-					emeralds.add(level.entities[j][i].position[1]);
-				}
-			}
-		}
-	}
+	
 	public void getClosestEmerald(){
 		double distanceOfClosest=2000;//Arbitrarily large number
 		double distance;
