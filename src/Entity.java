@@ -28,10 +28,10 @@ public class Entity extends Canvas{
 		this.spriteName=spriteName;
 		switch (spriteName){
 			case "Gold": killPriority=9; break;
-			case "Weapon": killPriority=3; break;
+			case "Weapon": killPriority=2; break;
 			case "Hobbin": killPriority=2; break;
 			case "Nobbin": killPriority=2; break;
-			case "Hero": killPriority=1; break;
+			case "Hero": killPriority=2; break;
 			case "Empty": killPriority=-1; break;
 			default: killPriority=0; break;
 		}
@@ -63,12 +63,16 @@ public class Entity extends Canvas{
 			if (position[0]+dx<0||position[0]+dx>(level.gameSize-1)*level.imageSize||position[1]+dy<0||position[1]+dy>(level.gameSize-1)*level.imageSize) next=null;
 			else next = level.entities[(position[0]+dx)/level.imageSize][(position[1]+dy)/level.imageSize];
 			if (next!=null){
-				if (killPriority>next.killPriority){
+				if (killPriority>=next.killPriority){
 					next.die();
 					level.entities[(position[0]+dx)/level.imageSize][(position[1]+dy)/level.imageSize]=this;
 					level.entities[(position[0])/level.imageSize][(position[1])/level.imageSize]= new Entity(Color.black,0,dm,position[0],position[0],"Empty");
 					position[0]+=dx;
 					position[1]+=dy;
+					if (killPriority == next.killPriority){
+						die();
+						level.entities[(position[0])/level.imageSize][(position[1])/level.imageSize]= new Entity(Color.black,0,dm,position[0],position[0],"Empty");
+					}
 				}
 				else die();
 			}
