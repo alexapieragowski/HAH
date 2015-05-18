@@ -12,12 +12,16 @@ public class Gold extends Entity {
 	public void fallenBlocks(){
 		if (this.position[1]<this.originalPosition[1]-3){
 			this.canFall=false;
-			this.breakOpen();
+			this.fallDown();
 		}
 	}
 	
-	public void breakOpen(){
-		BrokenGold bg = new BrokenGold(dm, this.position[0],this.position[1]);
+	public void fallDown(){
+		if (level.entities[position[0]/level.imageSize][position[1]/level.imageSize+1].spriteName=="Empty"){
+			//movement(0, level.imageSize);
+			FallingGold fallingGold = new FallingGold(dm, position[0], position[1]);
+			level.entities[position[0]/level.imageSize][position[1]/level.imageSize] = fallingGold;
+		}
 	}
 	
 	

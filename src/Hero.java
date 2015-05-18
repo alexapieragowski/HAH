@@ -2,7 +2,7 @@ import java.awt.Color;
 
 
 public class Hero extends Entity {
-	int facing = 0;
+	String facing = "right";
 	private static final long DELAY = 300;
 	private long sinceLast;
 	protected int[] dpos = {0,0};
@@ -17,7 +17,9 @@ public class Hero extends Entity {
 	public void updateThis(long time) {//TODO add shoot bullet
 		sinceLast+=time;
 		if (sinceLast>DELAY){
+			shoot();
 			movement(dpos[0],dpos[1]);
+			findFacing();
 			dpos[0]=0;
 			dpos[1]=0;
 			shoot=false;
@@ -62,6 +64,32 @@ public class Hero extends Entity {
 	public void die(){
 		dm.loseLife();
 	}
+	
+	public void shoot(){
+		if (shoot){
+			int x=0;
+			int y=0;
+			switch (facing){
+			case "right": {x = level.imageSize; break;
+			}
+			case "left": {x = -level.imageSize; break;
+			}
+			case "up": {y = -level.imageSize; break;
+			}
+			case "down": {y = level.imageSize; break;}
+			}
+			Weapon weapon = new Weapon(dm, x+position[0], y+position[1],facing);
+			level.entities[(x+position[0])/level.imageSize][(y+position[1])/level.imageSize] = weapon;
+		}
+	}
+
+	public void findFacing(){
+		if (dpos[0] == level.imageSize && dpos[1] == 0) {facing = "right";}
+		if (dpos[0] == -level.imageSize && dpos[1] == 0) {facing = "left";}
+		if (dpos[0] == 0 && dpos[1] == -level.imageSize) {facing = "up";}
+		if (dpos[0] == 0 && dpos[1] == level.imageSize) {facing = "down";}
+	}
+	
 
 //	@Override
 //	public void keyPressed(KeyEvent e) {

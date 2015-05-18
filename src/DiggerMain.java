@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
+
 //Please let this work
 public class DiggerMain extends JFrame {
 	protected transient KeyListener keyListener = new KeyListener();
@@ -22,11 +23,12 @@ public class DiggerMain extends JFrame {
 	private JPanel mainscreen;
 	protected transient Update u;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
         DiggerMain mainFrame = new DiggerMain();
 		mainFrame.setSize(528, 636);
 		mainFrame.setTitle("Digger");
 		mainFrame.setVisible(true);
+
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //		mainFrame.requestFocusInWindow();
 		Thread t = new Thread(mainFrame.u);
@@ -109,4 +111,5 @@ public class DiggerMain extends JFrame {
 		repaint();
 		currentLevel.repaint();
 	}
+	
 }
