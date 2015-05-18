@@ -71,7 +71,7 @@ public class Entity extends Canvas{
 					position[1]+=dy;
 					if (killPriority == next.killPriority){
 						die();
-						level.entities[(position[0])/level.imageSize][(position[1])/level.imageSize]= new Entity(Color.black,0,dm,position[0],position[0],"Empty");
+						level.entities[(position[0])/level.imageSize][(position[1])/level.imageSize]= new Entity(Color.black,0,dm,position[0],position[1],"Empty");
 					}
 				}
 				else die();

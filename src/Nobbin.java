@@ -85,7 +85,7 @@ public class Nobbin extends Enemies{
 	public void updateThis(long time) {
 		sinceLast+=time;
 		if (sinceLast>DELAY){
-			howToMove();
+			howToMove();	
 			movement(dpos[0],dpos[1]);
 			dpos[0]=0;
 			dpos[1]=0;
