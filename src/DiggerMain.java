@@ -18,7 +18,7 @@ public class DiggerMain extends JFrame {
 	protected int currentLevelNumber=-1;
 	private Integer currentScore = 0;
 	private JLabel score;
-	private Integer currentLifes = 3;
+	protected Integer currentLifes = 3;
 	private JLabel lifes;
 	private JPanel mainscreen;
 	protected transient Update u;

@@ -38,6 +38,14 @@ public class Hero extends Entity {
 	
 	public void die(){
 		dm.loseLife();
+		if (dm.currentLifes<=0){
+			level.hardReset();
+			return;
+		}
+		else {
+			level.resetAfterDie();
+			return;
+		}
 	}
 	
 	public void shoot(){

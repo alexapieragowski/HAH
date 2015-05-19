@@ -33,6 +33,9 @@ public class Level extends JPanel implements Serializable{
 //	private static final int DELAY = 1000;
 	protected Entity hero;
 	private transient BufferedImage background;
+	private ArrayList<Integer> heroList;
+	private ArrayList<Integer> hobbins;
+	private ArrayList<Integer> nobbins;
 	
 	public Level(DiggerMain dm){
 		initDm(dm);
@@ -61,6 +64,7 @@ public class Level extends JPanel implements Serializable{
 		entities[11][14] = new Hobbin(dm,11*imageSize,14*imageSize);
 		entities[15][5] = new Nobbin(dm,15*imageSize,5*imageSize);
 		keybinding();
+		initializeStartConditions();
 	}
 	
 	public Level(DiggerMain dm,Entity entities[][],Entity hero){
@@ -186,6 +190,70 @@ public class Level extends JPanel implements Serializable{
 			}
 		}
 		return emeralds;
+	}
+	
+	public ArrayList<Integer> getHero(){
+		ArrayList<Integer> heroList = new ArrayList<Integer>();
+		for (int i=0;i<16;i++){
+			for (int j=0;j<16;j++){
+				if (entities[j][i].color.equals(Color.blue)){
+					heroList.add(entities[j][i].position[0]);
+					heroList.add(entities[j][i].position[1]);
+				}
+			}
+		}
+		return heroList;
+	}
+	
+	public ArrayList<Integer> getHobbins(){
+		ArrayList<Integer> hobbins = new ArrayList<Integer>();
+		for (int i=0;i<16;i++){
+			for (int j=0;j<16;j++){
+				if (entities[j][i].color.equals(Color.red)){
+					hobbins.add(entities[j][i].position[0]);
+					hobbins.add(entities[j][i].position[1]);
+				}
+			}
+		}
+		return hobbins;
+	}
+	
+	public ArrayList<Integer> getNobbins(){
+		ArrayList<Integer> nobbins = new ArrayList<Integer>();
+		for (int i=0;i<16;i++){
+			for (int j=0;j<16;j++){
+				if (entities[j][i].color.equals(Color.orange)){
+					nobbins.add(entities[j][i].position[0]);
+					nobbins.add(entities[j][i].position[1]);
+				}
+			}
+		}
+		return nobbins;
+	}
+	
+	public void initializeStartConditions(){
+		heroList = getHero();
+		hobbins = getHobbins();
+		nobbins = getNobbins();
+	}
+	
+	public void resetAfterDie(){
+		
+		Hero newHero = new Hero(dm, heroList.get(0), heroList.get(1));
+		entities[heroList.get(0)/imageSize][heroList.get(1)/imageSize] = newHero;
+		for (int i=0; i<hobbins.size(); i+=2){
+			Hobbin newHobbin = new Hobbin(dm, hobbins.get(i), hobbins.get(i+1));
+			entities[hobbins.get(i)/imageSize][hobbins.get(i+1)/imageSize] = newHobbin;
+		}
+		for (int i=0; i<nobbins.size(); i+=2){
+			Nobbin newNobbin = new Nobbin(dm, nobbins.get(i), nobbins.get(i+1));
+			entities[nobbins.get(i)/imageSize][nobbins.get(i+1)/imageSize] = newNobbin;
+		}
+		hero = newHero;
+	}
+	
+	public void hardReset(){
+		dm.dispose();
 	}
 	
 	public void keybinding(){
