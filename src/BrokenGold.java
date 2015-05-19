@@ -5,8 +5,8 @@ public class BrokenGold extends Entity {
 	private static final long DELAY = 5000;
 	private long sinceLast;
 	
-	public BrokenGold(DiggerMain dm, int x_position, int y_position) {
-		super(Color.pink, 500, dm, x_position, y_position, "BrokenGold");
+	public BrokenGold(DiggerMain dm, int x_position, int y_position, String spriteName) {
+		super(Color.pink, 500, dm, x_position, y_position, spriteName);
 	}
 	@Override
 	public void updateThis(long time) {

@@ -11,6 +11,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -43,6 +44,13 @@ public class Level extends JPanel implements Serializable{
 	        	add(entities[j][i]);    	
 	        }
 		}
+		Random r = new Random();
+		int x,y;
+		for (int i=0;i<8;i++){
+			x=r.nextInt(16);
+			y=r.nextInt(16);
+			entities[x][y] = new Gold(dm,x*imageSize,y*imageSize);
+		}
 		for (int i = 0;i<gameSize;i++){
 			entities[i][5]= new Entity(Color.black,0,dm,i*imageSize,5*imageSize,"Empty");
 		}
@@ -51,7 +59,6 @@ public class Level extends JPanel implements Serializable{
 			addEmerald(i+2,7);
 		}
 		entities[11][14] = new Hobbin(dm,11*imageSize,14*imageSize);
-		entities[5][8] = new Gold(dm,5*imageSize,8*imageSize);
 		entities[15][5] = new Nobbin(dm,15*imageSize,5*imageSize);
 		keybinding();
 	}

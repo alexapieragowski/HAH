@@ -26,13 +26,15 @@ public class Entity extends Canvas{
 		position[0]=x_position;
 		position[1]=y_position;
 		this.spriteName=spriteName;
-		switch (spriteName){
-			case "Gold": killPriority=9; break;
-			case "FallingGold": killPriority=8; break;
+		if (spriteName.startsWith("Gold")) killPriority=4;
+		else if (spriteName.startsWith("FallingGold")) killPriority=3;
+		else switch (spriteName){
+//			case "Gold": killPriority=9; break;
+//			case "FallingGold": killPriority=8; break;
 			case "Weapon": killPriority=2; break;
 			case "Hobbin": killPriority=2; break;
 			case "Nobbin": killPriority=2; break;
-			case "Hero": killPriority=2; break;
+			case "Hero": killPriority=1; break;
 			case "Empty": killPriority=-1; break;
 			default: killPriority=0; break;
 		}
