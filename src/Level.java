@@ -238,7 +238,10 @@ public class Level extends JPanel implements Serializable{
 	}
 	
 	public void resetAfterDie(){
-		
+		ArrayList<Integer> heroListcur = getHero();
+		ArrayList<Integer> hobbinscur = getHobbins();
+		ArrayList<Integer> nobbinscur = getNobbins();
+		entities[heroListcur.get(0)/imageSize][heroListcur.get(1)/imageSize] = new Entity(Color.black,0,dm,heroListcur.get(0),heroListcur.get(1),"Empty");
 		Hero newHero = new Hero(dm, heroList.get(0), heroList.get(1));
 		entities[heroList.get(0)/imageSize][heroList.get(1)/imageSize] = newHero;
 		for (int i=0; i<hobbins.size(); i+=2){
