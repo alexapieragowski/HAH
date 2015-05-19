@@ -244,11 +244,13 @@ public class Level extends JPanel implements Serializable{
 		entities[heroListcur.get(0)/imageSize][heroListcur.get(1)/imageSize] = new Entity(Color.black,0,dm,heroListcur.get(0),heroListcur.get(1),"Empty");
 		Hero newHero = new Hero(dm, heroList.get(0), heroList.get(1));
 		entities[heroList.get(0)/imageSize][heroList.get(1)/imageSize] = newHero;
-		for (int i=0; i<hobbins.size(); i+=2){
+		for (int i=0; i<hobbins.size()-1; i+=2){
+			entities[hobbinscur.get(i)/imageSize][hobbinscur.get(i+1)/imageSize] = new Entity(Color.black,0,dm,hobbinscur.get(i),hobbinscur.get(i+1),"Empty");
 			Hobbin newHobbin = new Hobbin(dm, hobbins.get(i), hobbins.get(i+1));
 			entities[hobbins.get(i)/imageSize][hobbins.get(i+1)/imageSize] = newHobbin;
 		}
-		for (int i=0; i<nobbins.size(); i+=2){
+		for (int i=0; i<nobbins.size()-1; i+=2){
+			entities[nobbinscur.get(i)/imageSize][nobbinscur.get(i+1)/imageSize] = new Entity(Color.black,0,dm,nobbinscur.get(i),nobbinscur.get(i+1),"Empty");
 			Nobbin newNobbin = new Nobbin(dm, nobbins.get(i), nobbins.get(i+1));
 			entities[nobbins.get(i)/imageSize][nobbins.get(i+1)/imageSize] = newNobbin;
 		}
