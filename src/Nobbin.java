@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 
-public class Nobbin extends Enemies{
+public class Nobbin extends Entity{
 	private Entity hero;
 	private int goalx;
 	private int goaly;

@@ -51,6 +51,7 @@ public class Level extends JPanel implements Serializable{
 			addEmerald(i+2,7);
 		}
 		entities[11][14] = new Hobbin(dm,11*imageSize,14*imageSize);
+		entities[5][8] = new Gold(dm,5*imageSize,8*imageSize);
 		entities[15][5] = new Nobbin(dm,15*imageSize,5*imageSize);
 		keybinding();
 	}

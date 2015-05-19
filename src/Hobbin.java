@@ -2,7 +2,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 
-public class Hobbin extends Enemies{
+public class Hobbin extends Entity{
 	private ArrayList<Integer> emeralds = new ArrayList<Integer>();
 	private int indexOfClosest;
 	private static final long DELAY = 500;

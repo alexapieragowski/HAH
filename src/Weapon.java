@@ -31,7 +31,7 @@ public class Weapon extends Entity {
 		super.paint(g);
 		if (spin>DELAY/2){
 			AffineTransform transform = new AffineTransform();
-			transform.rotate(Math.PI/2,sprite.getWidth()/2,sprite.getHeight()/2);
+			transform.rotate(Math.PI/2,sprite.getWidth()/2,sprite.getHeight()/2 );
 			AffineTransformOp op = new AffineTransformOp(transform,AffineTransformOp.TYPE_BILINEAR);
 			sprite=op.filter(sprite,null);
 			spin=0;
