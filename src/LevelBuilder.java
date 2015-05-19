@@ -169,7 +169,7 @@ public class LevelBuilder extends JPanel{
 				}
 				case "Emerald":{
 					button[x][y].setBackground(Color.green);
-					entities[x][y]=new Entity(Color.green,100,dm,x*imageSize,y*imageSize,"Dirt");
+					entities[x][y]=new Entity(Color.green,100,dm,x*imageSize,y*imageSize,"Emerald");
 					break;
 				}
 				case "Nothing":{
@@ -189,7 +189,7 @@ public class LevelBuilder extends JPanel{
 				}
 				case "Gold":{
 					button[x][y].setBackground(Color.yellow);
-					entities[x][y]=new Entity(Color.yellow,100,dm,x*imageSize,y*imageSize,"Gold");//TODO Make Gold
+					entities[x][y]=new Gold(dm,x*imageSize,y*imageSize);
 					break;
 				}
 				default: break;

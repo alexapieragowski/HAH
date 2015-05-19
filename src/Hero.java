@@ -27,11 +27,21 @@ public class Hero extends Entity {
 				sinceLast=0;
 			}
 			else{
+				pushGold(); 
 				movement(dpos[0],dpos[1]);
 				findFacing();
 				dpos[0]=0;
 				dpos[1]=0;
 				sinceLast=0;
+			}
+		}
+	}
+	private void pushGold() {
+		if(0<=position[0]+dpos[0] && position[0]+dpos[0]<level.gameSize*level.imageSize){
+			Entity e1=level.entities[(position[0]+dpos[0])/level.imageSize][position[1]/level.imageSize];
+			System.out.println(e1.spriteName.startsWith("Gold"));  
+			if (e1.spriteName.startsWith("Gold")){
+				e1.movement(dpos[0],0);
 			}
 		}
 	}
@@ -58,9 +68,11 @@ public class Hero extends Entity {
 				case "up": {y = -level.imageSize; break;}
 				case "down": {y = level.imageSize; break;}
 			}
-			Weapon weapon = new Weapon(dm, x+position[0], y+position[1],facing);
-			level.entities[(x+position[0])/level.imageSize][(y+position[1])/level.imageSize].die();
-			level.entities[(x+position[0])/level.imageSize][(y+position[1])/level.imageSize] = weapon;
+			if ((0<=position[0]+x && position[0]+x<level.gameSize*level.imageSize && 0<=position[1]+y && position[1]+y<level.gameSize*level.imageSize)){
+				Weapon weapon = new Weapon(dm, x+position[0], y+position[1],facing);
+				level.entities[(x+position[0])/level.imageSize][(y+position[1])/level.imageSize].die();
+				level.entities[(x+position[0])/level.imageSize][(y+position[1])/level.imageSize] = weapon;
+			}
 		}
 	}
 

@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
+import java.util.Random;
 
 
 public class Nobbin extends Entity{
@@ -11,6 +12,7 @@ public class Nobbin extends Entity{
 	private static final long DELAY = 250;
 	private long sinceLast;
 	private int[] dpos = {0,0};
+	private static Random r = new Random();
 	
 	public Nobbin(DiggerMain dm, int x_position, int y_position) {
 		super(Color.orange,250,dm,x_position,y_position,"Nobbin");
@@ -85,11 +87,17 @@ public class Nobbin extends Entity{
 	public void updateThis(long time) {
 		sinceLast+=time;
 		if (sinceLast>DELAY){
-			howToMove();	
-			movement(dpos[0],dpos[1]);
-			dpos[0]=0;
-			dpos[1]=0;
-			sinceLast=0;
+			int x = r.nextInt(20);
+			if (x!=0){
+				howToMove();	
+				movement(dpos[0],dpos[1]);
+				dpos[0]=0;
+				dpos[1]=0;
+				sinceLast=0;
+			}else {
+				Hobbin hobbin = new Hobbin(dm, position[0], position[1]);
+				level.entities[position[0]/level.imageSize][position[1]/level.imageSize] = hobbin;
+			}
 		}
 	}
 	
