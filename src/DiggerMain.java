@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.io.FileInputStream;
@@ -21,24 +22,22 @@ public class DiggerMain extends JFrame {
 	private JLabel lifes;
 	private JPanel mainscreen;
 	protected transient Update u;
+	protected transient Thread t;
 	
 	public static void main(String[] args) throws Exception {
         DiggerMain mainFrame = new DiggerMain();
 		mainFrame.setSize(528, 636);
 		mainFrame.setTitle("Digger");
 		mainFrame.setVisible(true);
-
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		mainFrame.requestFocusInWindow();
-		Thread t = new Thread(mainFrame.u);
-		t.start();
+		mainFrame.requestFocusInWindow();
+		if (mainFrame.t!=null) mainFrame.t.start();
 	}
 	
 	public DiggerMain() {
 		Container window = getContentPane();
 	    window.setLayout(new BorderLayout());
 	    Font myfont = new Font("arial", Font.BOLD, 36);
-	    
 	    
 	    score = new JLabel("Score: "+currentScore.toString());
 	    score.setFont(myfont);
@@ -59,13 +58,13 @@ public class DiggerMain extends JFrame {
 		    mainscreen.setFocusable(true);
 		    window.add(mainscreen,BorderLayout.CENTER);
 		    u=new Update(currentLevel);
+		    t = new Thread(u);
 	    }
 	    else{
 		    mainscreen = new LevelBuilder(this);
 		    window.add(mainscreen,BorderLayout.CENTER);
 		    mainscreen.requestFocusInWindow();
-	    }
-	    
+	    }	    
 	}
 	
 	public void addScore(Integer score){
@@ -83,6 +82,7 @@ public class DiggerMain extends JFrame {
 	/*
 	 * Placeholder for now, once the game window is written it will replace the Level in the game window with the load.
 	 */
+	@SuppressWarnings("deprecation")
 	public void loadLevel(String FileName){
 		Level load=null;
 		try{
@@ -98,18 +98,12 @@ public class DiggerMain extends JFrame {
 			System.out.println("File not found.");
 			throw new IllegalStateException(e);
 		}
-		u.toggle();
+		t.suspend();
 		currentLevel.entities=load.entities;
 		currentLevel.hero=load.hero;
 		currentLevel.initEntities();
-		u.toggle();
-//		remove(mainscreen);
-//		mainscreen=currentLevel;
-//		add(mainscreen,BorderLayout.CENTER);
-//		u.changeLevel(currentLevel);
-//		mainscreen.setFocusable(true);
-//		currentLevel.setFocusable(true);
-//		revalidate();
+		currentLevel.initializeStartConditions();
+		t.resume();
 		repaint();
 		currentLevel.repaint();
 	}
