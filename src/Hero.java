@@ -1,6 +1,12 @@
 import java.awt.Color;
 
-
+/**
+ * 
+ * This class creates the hero of the game
+ *
+ * @author heshelhj.
+ *         Created May 20, 2015.
+ */
 public class Hero extends Entity {
 	String facing = "right";
 	private static final long DELAY = 300;
@@ -16,6 +22,9 @@ public class Hero extends Entity {
 		sinceLastShoot=SHOOTDELAY;
 		shoot = false;
 	}
+	/**
+	 * this method handles updating the hero's movement and their ability to shoot the weapon
+	 */
 	public void updateThis(long time) {//TODO add shoot bullet
 		sinceLast+=time;
 		sinceLastShoot+=time;
@@ -37,12 +46,22 @@ public class Hero extends Entity {
 			}
 		}
 	}
+	/**
+	 * 
+	 *Allows the hero to not die when it runs into gold
+	 *
+	 */
 	private void howToMoveAndNotDieToGold() {
 		if(0<=position[0]+dpos[0] && position[0]+dpos[0]<level.gameSize*level.imageSize && 0<=position[1]+dpos[1] && position[1]+dpos[1]<level.gameSize*level.imageSize){
 			Entity e1=level.entities[(position[0]+dpos[0])/level.imageSize][(position[1]+dpos[1])/level.imageSize];
 			if (!e1.spriteName.contains("Gold")||e1.spriteName.startsWith("BrokenGold")) movement(dpos[0],dpos[1]);
 		}
 	}
+	/**
+	 * 
+	 * allows hero to push the gold
+	 *
+	 */
 	private void pushGold() {
 		if(0<=position[0]+dpos[0] && position[0]+dpos[0]<level.gameSize*level.imageSize){
 			Entity e1=level.entities[(position[0]+dpos[0])/level.imageSize][position[1]/level.imageSize];
@@ -51,7 +70,11 @@ public class Hero extends Entity {
 			}
 		}
 	}
-	
+	/**
+	 * updates the amount of size(subtracts 1) and checks if the game needs a hard or soft reset
+	 * based on lives left. Soft reset means that there are remaining lives and the hero resets. Hard reset 
+	 * means the game is over
+	 */
 	public void die(){
 		dm.loseLife();
 		if (dm.currentLifes<=0){
@@ -63,7 +86,12 @@ public class Hero extends Entity {
 			return;
 		}
 	}
-	
+	/**
+	 * 
+	 * This method checks the direction the hero is facing and allows them to fire their weapon. 
+	 * It creates a new weapon that moves in the correct direction
+	 *
+	 */
 	public void shoot(){
 		if (shoot){
 			int x=0;
@@ -85,7 +113,12 @@ public class Hero extends Entity {
 				
 		}
 	}
-
+	/**
+	 * 
+	 * Determines the direction the hero is facing by checking its last dpos x and dpos y. The
+	 * default direction is to the right
+	 *
+	 */
 	public void findFacing(){
 		if (dpos[0] == level.imageSize && dpos[1] == 0) {facing = "right";}
 		if (dpos[0] == -level.imageSize && dpos[1] == 0) {facing = "left";}

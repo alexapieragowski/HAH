@@ -9,7 +9,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
+/**
+ * 
+ * This is the main class for the Digger game. This is where the board is created.
+ *
+ * @author heshelhj.
+ *         Created May 20, 2015.
+ */
 
 //Please let this work
 public class DiggerMain extends JFrame {
@@ -33,7 +39,11 @@ public class DiggerMain extends JFrame {
 		Thread t = new Thread(mainFrame.u);
 		t.start();
 	}
-	
+/**
+ * 	
+ * This method contructs the Digger game board itself
+ *
+ */
 	public DiggerMain() {
 		Container window = getContentPane();
 	    window.setLayout(new BorderLayout());
@@ -67,13 +77,22 @@ public class DiggerMain extends JFrame {
 	    }
 	    
 	}
-	
+/**
+ * 	
+ * This method handles the scoring of the game. It resets the label on the DiggerMain if the hero scores points
+ *
+ * @param score
+ */
 	public void addScore(Integer score){
 		this.score.setText("Score: "+currentScore.toString()+" ");
 		this.currentScore += score;
 		this.score.setText("Score: "+currentScore.toString());
 	}
-	
+/**
+ * 	
+ * This method handles the resetting the lives label on the DiggerMain
+ *
+ */
 	public void loseLife(){
 		this.currentLifes--;
 		this.lifes.setText("Lifes: "+currentLifes.toString());
@@ -83,6 +102,12 @@ public class DiggerMain extends JFrame {
 	/*
 	 * Placeholder for now, once the game window is written it will replace the Level in the game window with the load.
 	 */
+/**
+ * 	
+ *Loads a game level from a file
+ *
+ * @param FileName
+ */
 	public void loadLevel(String FileName){
 		Level load=null;
 		try{

@@ -2,7 +2,13 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
-
+/**
+ * 
+ *Creates a hobbin enemy that attempts to collect the emeralds before the hero is able to
+ *
+ * @author heshelhj.
+ *         Created May 20, 2015.
+ */
 public class Hobbin extends Entity{
 	private ArrayList<Integer> treasure = new ArrayList<Integer>();
 	private int indexOfClosest;
@@ -16,7 +22,11 @@ public class Hobbin extends Entity{
 		sinceLast=DELAY;
 		initDmLevel(dm);
 	}
-	
+	/**
+	 * 
+	 * Moves the hobbin in the direction of the closest emerald
+	 *
+	 */
 	public void howToMove(){
 		treasure.clear();
 		treasure.addAll(level.getEmeralds());
@@ -38,6 +48,9 @@ public class Hobbin extends Entity{
 			if(nextSprite.contains("Gold")) level.entities[(position[0]+dpos[0])/level.imageSize][(position[1]+dpos[1])/level.imageSize] = new Entity(Color.black,0,dm,position[0]+dpos[0],position[1]+dpos[1],"Empty");
 		}
 	}
+	/**
+	 * updates the board as hobbin needs to move
+	 */
 	public void updateThis(long time) {
 		sinceLast+=time;
 		if (sinceLast>DELAY){
@@ -54,7 +67,11 @@ public class Hobbin extends Entity{
 			}
 		}
 	}
-	
+	/**
+	 * 
+	 * gets the position of the closest emerald using Pythagorean Theorem.  
+	 *
+	 */
 	public void getClosestTreasure(){
 		double distanceOfClosest=2000;//Arbitrarily large number
 		double distance;
