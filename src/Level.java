@@ -265,6 +265,16 @@ public class Level extends JPanel implements Serializable{
 		dm.dispose();
 	}
 	
+	public void nextLevel(){
+		ArrayList<Integer> nowEmeralds = getEmeralds();
+		if (nowEmeralds.size()==0){
+			if(dm.currentLevelNumber<saves.length){
+				dm.loadLevel(saves[dm.currentLevelNumber+1]);
+				dm.currentLevelNumber++;
+			}
+		}
+	}
+	
 	public void keybinding(){
 		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("U"), "levelUp");
 		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("D"), "levelDown");
