@@ -31,7 +31,7 @@ public class Weapon extends Entity {
 		super.paint(g);
 		if (spin>DELAY/2){
 			AffineTransform transform = new AffineTransform();
-			transform.rotate(Math.PI/2,sprite.getWidth()/2,sprite.getHeight()/2 );
+			transform.rotate(Math.PI/2,sprite.getWidth()/2,sprite.getHeight()/2);
 			AffineTransformOp op = new AffineTransformOp(transform,AffineTransformOp.TYPE_BILINEAR);
 			sprite=op.filter(sprite,null);
 			spin=0;
@@ -64,10 +64,10 @@ public class Weapon extends Entity {
 	private boolean isValid(String facing){
 		String sprite;
 		switch (facing){
-			case "right":{sprite = level.entities[position[0]/level.imageSize+1][position[1]/level.imageSize].spriteName;	break; }
-			case "left":{sprite = level.entities[position[0]/level.imageSize-1][position[1]/level.imageSize].spriteName;	break; }
-			case "up":{sprite = level.entities[position[0]/level.imageSize][position[1]/level.imageSize-1].spriteName;	break; }
-			case "down":{sprite = level.entities[position[0]/level.imageSize][position[1]/level.imageSize+1].spriteName;	break; }
+			case "right":{sprite = level.entities[position[0]/level.imageSize+1][position[1]/level.imageSize].spriteName; break; }
+			case "left":{sprite = level.entities[position[0]/level.imageSize-1][position[1]/level.imageSize].spriteName; break; }
+			case "up":{sprite = level.entities[position[0]/level.imageSize][position[1]/level.imageSize-1].spriteName; break; }
+			case "down":{sprite = level.entities[position[0]/level.imageSize][position[1]/level.imageSize+1].spriteName; break; }
 			default: return false;
 		}
 		return sprite.equals("Empty")||sprite.equals("Nobbin")||sprite.equals("Hobbin");

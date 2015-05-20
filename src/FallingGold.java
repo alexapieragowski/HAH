@@ -29,8 +29,6 @@ public class FallingGold extends Entity {
 	public void updateThis(long time) {
 		sinceLast+=time;
 		if (sinceLast>DELAY){
-//			movement(0,level.imageSize);
-//			ifBreak();
 			howToMove();
 			sinceLast=0;
 		}

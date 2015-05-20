@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 
 //Please let this work
 public class DiggerMain extends JFrame {
-	protected transient KeyListener keyListener = new KeyListener();
 	protected Level currentLevel;
 	protected int currentLevelNumber=-1;
 	private Integer currentScore = 0;
@@ -59,13 +58,14 @@ public class DiggerMain extends JFrame {
 		    mainscreen=currentLevel;
 		    mainscreen.setFocusable(true);
 		    window.add(mainscreen,BorderLayout.CENTER);
+		    u=new Update(currentLevel);
 	    }
 	    else{
 		    mainscreen = new LevelBuilder(this);
 		    window.add(mainscreen,BorderLayout.CENTER);
 		    mainscreen.requestFocusInWindow();
 	    }
-	    u=new Update(currentLevel);
+	    
 	}
 	
 	public void addScore(Integer score){
@@ -98,16 +98,18 @@ public class DiggerMain extends JFrame {
 			System.out.println("File not found.");
 			throw new IllegalStateException(e);
 		}
-		currentLevel=load;
-		currentLevel.initDm(this);
+		u.toggle();
+		currentLevel.entities=load.entities;
+		currentLevel.hero=load.hero;
 		currentLevel.initEntities();
-		remove(mainscreen);
-		mainscreen=currentLevel;
-		add(mainscreen,BorderLayout.CENTER);
-		u.changeLevel(currentLevel);
-		mainscreen.setFocusable(true);
-		currentLevel.setFocusable(true);
-		revalidate();
+		u.toggle();
+//		remove(mainscreen);
+//		mainscreen=currentLevel;
+//		add(mainscreen,BorderLayout.CENTER);
+//		u.changeLevel(currentLevel);
+//		mainscreen.setFocusable(true);
+//		currentLevel.setFocusable(true);
+//		revalidate();
 		repaint();
 		currentLevel.repaint();
 	}

@@ -28,7 +28,8 @@ public class Hero extends Entity {
 			}
 			else{
 				pushGold(); 
-				movement(dpos[0],dpos[1]);
+//				movement(dpos[0],dpos[1]);
+				howToMoveAndNotDieToGold();
 				findFacing();
 				dpos[0]=0;
 				dpos[1]=0;
@@ -36,10 +37,15 @@ public class Hero extends Entity {
 			}
 		}
 	}
+	private void howToMoveAndNotDieToGold() {
+		if(0<=position[0]+dpos[0] && position[0]+dpos[0]<level.gameSize*level.imageSize && 0<=position[1]+dpos[1] && position[1]+dpos[1]<level.gameSize*level.imageSize){
+			Entity e1=level.entities[(position[0]+dpos[0])/level.imageSize][(position[1]+dpos[1])/level.imageSize];
+			if (!(e1.spriteName.contains("Gold"))) movement(dpos[0],dpos[1]);
+		}
+	}
 	private void pushGold() {
 		if(0<=position[0]+dpos[0] && position[0]+dpos[0]<level.gameSize*level.imageSize){
 			Entity e1=level.entities[(position[0]+dpos[0])/level.imageSize][position[1]/level.imageSize];
-			System.out.println(e1.spriteName.startsWith("Gold"));  
 			if (e1.spriteName.startsWith("Gold")){
 				e1.movement(dpos[0],0);
 			}
@@ -69,10 +75,14 @@ public class Hero extends Entity {
 				case "down": {y = level.imageSize; break;}
 			}
 			if ((0<=position[0]+x && position[0]+x<level.gameSize*level.imageSize && 0<=position[1]+y && position[1]+y<level.gameSize*level.imageSize)){
-				Weapon weapon = new Weapon(dm, x+position[0], y+position[1],facing);
-				level.entities[(x+position[0])/level.imageSize][(y+position[1])/level.imageSize].die();
-				level.entities[(x+position[0])/level.imageSize][(y+position[1])/level.imageSize] = weapon;
+				String nextSprite = level.entities[(position[0]+x)/level.imageSize][(position[1]+y)/level.imageSize].spriteName;
+				if (!nextSprite.contains("Gold") && !nextSprite.equals("Emerald") && !nextSprite.equals("Dirt")){
+					Weapon weapon = new Weapon(dm, x+position[0], y+position[1],facing);
+					level.entities[(x+position[0])/level.imageSize][(y+position[1])/level.imageSize].die();
+					level.entities[(x+position[0])/level.imageSize][(y+position[1])/level.imageSize] = weapon;
+				}
 			}
+				
 		}
 	}
 
