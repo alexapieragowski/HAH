@@ -40,7 +40,7 @@ public class Hero extends Entity {
 	private void howToMoveAndNotDieToGold() {
 		if(0<=position[0]+dpos[0] && position[0]+dpos[0]<level.gameSize*level.imageSize && 0<=position[1]+dpos[1] && position[1]+dpos[1]<level.gameSize*level.imageSize){
 			Entity e1=level.entities[(position[0]+dpos[0])/level.imageSize][(position[1]+dpos[1])/level.imageSize];
-			if (!(e1.spriteName.contains("Gold"))) movement(dpos[0],dpos[1]);
+			if (!e1.spriteName.contains("Gold")||e1.spriteName.startsWith("BrokenGold")) movement(dpos[0],dpos[1]);
 		}
 	}
 	private void pushGold() {
