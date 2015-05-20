@@ -3,7 +3,13 @@ import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 
-
+/**
+ * 
+ * Creates the shooting weapon for the hero
+ *
+ * @author heshelhj.
+ *         Created May 20, 2015.
+ */
 public class Weapon extends Entity {
 	private static final int DELAY = 150;
 	private long sinceLast;
@@ -15,7 +21,9 @@ public class Weapon extends Entity {
 		this.facing=facing;
 	}
 	
-
+	/**
+	 * updates the position of the weapon
+	 */
 	public void updateThis(long time) {
 		sinceLast+=time;
 		spin+=time;
@@ -27,6 +35,9 @@ public class Weapon extends Entity {
 			sinceLast=0;
 		}
 	}
+	/**
+	 * paints and spins the weapons
+	 */
 	public void paint(Graphics g){ //Eventually these will be sprites instead of rectangles.
 		super.paint(g);
 		if (spin>DELAY/2){
@@ -37,7 +48,12 @@ public class Weapon extends Entity {
 			spin=0;
 		}
 	}
-	
+	/**
+	 * 
+	 *calls the movement based on the direction based on the direction the hero is facing and 
+	 *makes the weapon fire in the appropriate direction
+	 *
+	 */
 	public void move(){
 		if (facing == "right") {
 			if (position[0]/level.imageSize+1<level.gameSize && isValid(facing)){
@@ -61,6 +77,13 @@ public class Weapon extends Entity {
 			}else level.entities[position[0]/level.imageSize][position[1]/level.imageSize]=new Entity(Color.black,0,dm,position[0],position[1],"Empty");
 		}
 	}
+	/**
+	 * 
+	 * checks if the hero can throw the weapon (isn't on an edge of the screen or so)
+	 *
+	 * @param facing
+	 * @return
+	 */
 	private boolean isValid(String facing){
 		String sprite;
 		switch (facing){
