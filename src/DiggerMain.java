@@ -29,14 +29,7 @@ public class DiggerMain extends JFrame {
 	protected transient Update u;
 	protected transient Thread t;
 	
-	public static void main(String[] args) throws Exception {
-        DiggerMain mainFrame = new DiggerMain();
-		mainFrame.setSize(528, 636);
-		mainFrame.setTitle("Digger");
-		mainFrame.setVisible(true);
-		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		if (mainFrame.t!=null) mainFrame.t.start();
-	}
+	
 /**
  * 	
  * This method contructs the Digger game board itself
@@ -46,11 +39,11 @@ public class DiggerMain extends JFrame {
 		Container window = getContentPane();
 	    window.setLayout(new BorderLayout());
 	    
-	    boolean toggle = true;
+//	    boolean toggle = false;
 	    //Below is just Testing to see what levels will currently look like
 	    //Once we get some pre-made levels flushed out this can just load the 
 	    //first one or display a menu screen of some sort.
-	    if (toggle){
+//	    if (toggle){
 	    	Font myfont = new Font("arial", Font.BOLD, 36);
 	    	
 	    	score = new JLabel("Score: "+currentScore.toString());
@@ -68,12 +61,13 @@ public class DiggerMain extends JFrame {
 		    window.add(mainscreen,BorderLayout.CENTER);
 		    u = new Update(currentLevel);
 		    t = new Thread(u);
-	    }
-	    else{
-		    mainscreen = new LevelBuilder(this);
-		    window.add(mainscreen,BorderLayout.CENTER);
-		    mainscreen.requestFocusInWindow();
-	    }
+//	    }
+//	    else{
+//	    	new LevelBuilder(this);
+//		    mainscreen = new LevelBuilder(this);
+//		    window.add(mainscreen,BorderLayout.CENTER);
+//		    mainscreen.requestFocusInWindow();
+//	    }
 	    
 	}
 /**
@@ -129,6 +123,7 @@ public class DiggerMain extends JFrame {
 				t.suspend();
 				currentLevel.entities=loaded.entities;
 				currentLevel.hero=loaded.hero;
+				currentLevel.enemySpawn=loaded.enemySpawn;
 				currentLevel.initEntities();
 				currentLevel.initializeStartConditions();
 				t.resume();

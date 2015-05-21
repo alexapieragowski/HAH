@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
@@ -14,7 +15,7 @@ import javax.swing.JPanel;
  * This class makes a JPanel window for making custom levels
  * It contains two inner classes for the Menu panel and Level Panel
  */
-public class LevelBuilder extends JPanel{
+public class LevelBuilder extends JFrame{
 	private DiggerMain dm;
 	private int buttonsize=32;
 	
@@ -24,6 +25,10 @@ public class LevelBuilder extends JPanel{
 		MenuButtonPanel menuPanel = new MenuButtonPanel();
 		add(menuPanel);
 		add(menuPanel.gamePanel);
+		setSize(600, 700);
+		setTitle("LevelEditor");
+		setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	
@@ -50,7 +55,11 @@ public class LevelBuilder extends JPanel{
 				add(buttons[i]);
 				if (i==0) buttons[i].setText("reset");
 				else if (i==1) buttons[i].setText("save");
-				else buttons[i].setBackground(buttonColor[i-2]);
+				else {
+					buttons[i].setBackground(buttonColor[i-2]);
+					if (i==6) buttons[i].setText("H");
+					else if (i==7) buttons[i].setText("S/N");
+				}
 				buttons[i].addActionListener(buttons[i]); 
 			}
 		}
@@ -66,7 +75,7 @@ public class LevelBuilder extends JPanel{
 			};
 			buttons[1] = new menuButton(){//Opens a window to save the game state.
 	            public void actionPerformed(ActionEvent event) {
-	            	Level level = new Level(dm,gamePanel.entities,gamePanel.hero);
+	            	Level level = new Level(dm,gamePanel.entities,gamePanel.hero,gamePanel.enemySpawn);
 	            	level.saveLevel();
 	            }
 			};
@@ -120,6 +129,7 @@ public class LevelBuilder extends JPanel{
 		protected Entity entities[][]= new Entity[gameSize][gameSize];
 		protected String entityToBePlaced;
 		protected Entity hero;
+		protected int[] enemySpawn;
 		
 		
 		
@@ -185,6 +195,7 @@ public class LevelBuilder extends JPanel{
 				case "Nobbin":{
 					button[x][y].setBackground(Color.orange);
 					entities[x][y]=new Nobbin(dm,x*imageSize,y*imageSize);
+					enemySpawn = new int[] {x,y};
 					break;
 				}
 				case "Gold":{

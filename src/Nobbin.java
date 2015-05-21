@@ -32,10 +32,8 @@ public class Nobbin extends Entity{
 		sinceLast=DELAY;
 	}
 	/**
-	 * 
 	 * The pathfinding method for the Nobbin. Uses the A* algorithm to find the go after the hero
-	 *
-	 * @return
+	 * @return returns the node of the goal, which contains all nodes required to get there from the start point.
 	 */
 	private Node aStar(){//Massive overkill?
 		boolean[][] visited = new boolean[16][16];
@@ -56,7 +54,10 @@ public class Nobbin extends Entity{
 		}
 		return null;
 	}
-	
+	/**
+	 * Finds the neighbor nodes of a given node.
+	 * @return returns a priority queue(sorted by fscore) of valid adjacent nodes from the given node.
+	 */
 	private PriorityQueue<Node> getNeighbors(Node n,boolean visited[][]){
 		PriorityQueue<Node> successors = new PriorityQueue<Node>();
 		Node newN;
@@ -79,6 +80,9 @@ public class Nobbin extends Entity{
 		}
 		return successors;
 	}
+	/**
+	 * Retraces the path from the goal node to the start for this Nobbin to follow.
+	 */
 	private void getPath(Node n){
 		while (n!=null){
 			int[] delta = {n.dx,n.dy};
@@ -87,7 +91,6 @@ public class Nobbin extends Entity{
 		}
 	}
 	/**
-	 * 
 	 * Tells the Nobbin to move based on A*
 	 *
 	 */
@@ -122,7 +125,9 @@ public class Nobbin extends Entity{
 		}
 	}
 	
-	
+	/**
+	 * Inner class node that A* uses, keeps track of relevant information and scoring for each entity in the array.
+	 */
 	private class Node implements Comparable<Node>{
 		public Entity entity;
 		public Node parent;

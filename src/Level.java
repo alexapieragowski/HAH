@@ -40,6 +40,10 @@ public class Level extends JPanel{
 	private ArrayList<Integer> heroList;
 	private ArrayList<Integer> hobbins;
 	private ArrayList<Integer> nobbins;
+	protected int[] enemySpawn;
+	private static final long DELAY = 3000;
+	private long sinceLast;
+	
 	
 	public Level(DiggerMain dm){
 		initDm(dm);
@@ -62,17 +66,20 @@ public class Level extends JPanel{
 			entities[i][5]= new Entity(Color.black,0,dm,i*imageSize,5*imageSize,"Empty");
 		}
 		addHero(5,5);
-		for (int i = 0; i < 3;i++){
-			addEmerald(i+2,7);
-		}
+		//Comment this out to make the game load pre-made levels.
+//		for (int i = 0; i < 3;i++){
+//			addEmerald(i+2,7);
+//		}
+		enemySpawn = new int[] {15,5};
 		entities[11][14] = new Hobbin(dm,11*imageSize,14*imageSize);
 		entities[15][5] = new Nobbin(dm,15*imageSize,5*imageSize);
 		keybinding();
 		initializeStartConditions();
 	}
 	
-	public Level(DiggerMain dm,Entity entities[][],Entity hero){
+	public Level(DiggerMain dm,Entity entities[][],Entity hero,int[] enemySpawn){
 		this.hero=hero;
+		this.enemySpawn=enemySpawn;
 		initDm(dm);
 		this.entities=entities;
 		setOpaque(true);
@@ -83,6 +90,11 @@ public class Level extends JPanel{
 		}
 		keybinding();
 	}
+	
+	
+	//Initializers
+	
+	
 	/**
 	 * 
 	 * Intializes a DiggerMain and binds the key presses to the game
@@ -118,7 +130,22 @@ public class Level extends JPanel{
 				entities[j][i].initDmLevel(dm);
 			}
 		}
-	}	
+	}
+	/**
+	 * 
+	 * Initializes the hero, hobbin, and nobbin position lists
+	 *
+	 */
+	public void initializeStartConditions(){
+		heroList = getHero();
+		hobbins = getHobbins();
+		nobbins = getNobbins();
+	}
+	
+	
+	//Updating stuff
+	
+	
 	/**
 	 * Draws the game board
 	 * @param g Graphics g
@@ -132,20 +159,75 @@ public class Level extends JPanel{
 	        }
 		}
 	}
+	/**
+	 * Updates the level by adding enemies until there are 3
+	 * @param time long time, time since entities has become less than 3.
+	 */
+	public void update(long time){
+		if (6>(getHobbins().size()+getNobbins().size())){
+			sinceLast+=time;
+			if (sinceLast>DELAY){
+				Nobbin n = new Nobbin(dm,enemySpawn[0]*imageSize,enemySpawn[1]*imageSize);
+				entities[enemySpawn[0]][enemySpawn[1]]=n;
+				sinceLast=0;
+			}
+		}
+	}
+	/**
+	 * 
+	 * Resets hobbins, nobbins, and the hero to their original position of the hero dies
+	 * but still has lives left
+	 *
+	 */
+	public void resetAfterDie(){
+		ArrayList<Integer> heroListcur = getHero();
+		ArrayList<Integer> hobbinscur = getHobbins();
+		ArrayList<Integer> nobbinscur = getNobbins();
+		entities[heroListcur.get(0)/imageSize][heroListcur.get(1)/imageSize] = new Entity(Color.black,0,dm,heroListcur.get(0),heroListcur.get(1),"Empty");
+		Hero newHero = new Hero(dm, heroList.get(0), heroList.get(1));
+		entities[heroList.get(0)/imageSize][heroList.get(1)/imageSize] = newHero;
+		for (int i=0; i<hobbinscur.size();i+=2){
+			entities[hobbinscur.get(i)/imageSize][hobbinscur.get(i+1)/imageSize] = new Entity(Color.black,0,dm,hobbinscur.get(i),hobbinscur.get(i+1),"Empty");
+		}
+		for (int i=0; i<hobbins.size()-1; i+=2){
+			Hobbin newHobbin = new Hobbin(dm, hobbins.get(i), hobbins.get(i+1));
+			entities[hobbins.get(i)/imageSize][hobbins.get(i+1)/imageSize] = newHobbin;
+		}
+		for (int i=0; i<nobbinscur.size();i+=2){
+			entities[nobbinscur.get(i)/imageSize][nobbinscur.get(i+1)/imageSize] = new Entity(Color.black,0,dm,nobbinscur.get(i),nobbinscur.get(i+1),"Empty");
+		}
+		for (int i=0; i<nobbins.size()-1; i+=2){
+			Nobbin newNobbin = new Nobbin(dm, nobbins.get(i), nobbins.get(i+1));
+			entities[nobbins.get(i)/imageSize][nobbins.get(i+1)/imageSize] = newNobbin;
+		}
+		hero = newHero;
+	}
+	/**
+	 * 
+	 * Kills the game if all of the hero's lives are exhuasted
+	 *
+	 */
+	public void hardReset(){
+		dm.dispose();
+	}
+	/**
+	 * 
+	 * Goes to the next level(if one is available when all the emeralds on the screen runs out.
+	 *
+	 */
+	public void nextLevel(){
+		ArrayList<Integer> nowEmeralds = getEmeralds();
+		if (nowEmeralds.size()==0){
+			if(dm.currentLevelNumber<saves.length-1){
+				dm.loadLevel(saves[dm.currentLevelNumber+1]);
+				dm.currentLevelNumber++;
+			}
+		}
+	}
 	
-//	public void update(){
-//		ArrayList<Thread> t = new ArrayList<Thread>();
-//		for (int i = 0; i < gameSize; i++) {
-//	        for (int j = 0; j < gameSize; j++) {
-//	        	if (entities[j][i].color==Color.red){
-//	        		t.add(new Thread((Hobbin)entities[j][i]));
-//	        	}
-//	        }
-//		}
-//		for (int i=0;i<t.size();i++){
-//			t.get(i).start();
-//		}
-//	}
+	
+	//Level saving stuff
+	
 	
 	/**
 	 * 
@@ -188,15 +270,9 @@ public class Level extends JPanel{
 	}
 	
 	
-//	@Override
-//	public void run() {
-//		try{
-//			Update u=new Update(this);
-//			Thread.sleep(DELAY);
-//		}catch (InterruptedException exception){}
-//	}
-	
 	//adding things for Testing
+	
+	
 	/**
 	 * 
 	 * Places a hero on the board
@@ -219,6 +295,29 @@ public class Level extends JPanel{
 	public void addEmerald(int x, int y) { //Puts a Emerald at the chosen location, for initial level setup.
 		entities[x][y]= new Entity(Color.green,100,dm, x*imageSize, y*imageSize,"Emerald");
 		repaint();
+	}
+	
+	
+	//Methods to get certain types of enemy from the game board.
+	
+	
+	/**
+	 * 
+	 *adds the emeralds positions to an arrayList
+	 *
+	 * @return and arrayList of positions
+	 */
+	public ArrayList<Integer> getGold(){
+		ArrayList<Integer> gold = new ArrayList<Integer>();
+		for (int i=0;i<gameSize;i++){
+			for (int j=0;j<gameSize;j++){
+				if (entities[j][i].spriteName.contains("Gold")){
+					gold.add(entities[j][i].position[0]);
+					gold.add(entities[j][i].position[1]);
+				}
+			}
+		}
+		return gold;
 	}
 	/**
 	 * 
@@ -292,62 +391,11 @@ public class Level extends JPanel{
 		}
 		return nobbins;
 	}
-	/**
-	 * 
-	 * Initializes the hero, hobbin, and nobbin position lists
-	 *
-	 */
-	public void initializeStartConditions(){
-		heroList = getHero();
-		hobbins = getHobbins();
-		nobbins = getNobbins();
-	}
-	/**
-	 * 
-	 * Resets hobbins, nobbins, and the hero to their original position of the hero dies
-	 * but still has lives left
-	 *
-	 */
-	public void resetAfterDie(){
-		ArrayList<Integer> heroListcur = getHero();
-		ArrayList<Integer> hobbinscur = getHobbins();
-		ArrayList<Integer> nobbinscur = getNobbins();
-		entities[heroListcur.get(0)/imageSize][heroListcur.get(1)/imageSize] = new Entity(Color.black,0,dm,heroListcur.get(0),heroListcur.get(1),"Empty");
-		Hero newHero = new Hero(dm, heroList.get(0), heroList.get(1));
-		entities[heroList.get(0)/imageSize][heroList.get(1)/imageSize] = newHero;
-		for (int i=0; i<hobbinscur.size();i+=2){
-			entities[hobbinscur.get(i)/imageSize][hobbinscur.get(i+1)/imageSize] = new Entity(Color.black,0,dm,hobbinscur.get(i),hobbinscur.get(i+1),"Empty");
-		}
-		for (int i=0; i<hobbins.size()-1; i+=2){
-			Hobbin newHobbin = new Hobbin(dm, hobbins.get(i), hobbins.get(i+1));
-			entities[hobbins.get(i)/imageSize][hobbins.get(i+1)/imageSize] = newHobbin;
-		}
-		for (int i=0; i<nobbinscur.size();i+=2){
-			entities[nobbinscur.get(i)/imageSize][nobbinscur.get(i+1)/imageSize] = new Entity(Color.black,0,dm,nobbinscur.get(i),nobbinscur.get(i+1),"Empty");
-		}
-		for (int i=0; i<nobbins.size()-1; i+=2){
-			Nobbin newNobbin = new Nobbin(dm, nobbins.get(i), nobbins.get(i+1));
-			entities[nobbins.get(i)/imageSize][nobbins.get(i+1)/imageSize] = newNobbin;
-		}
-		hero = newHero;
-	}
-	/**
-	 * 
-	 * Kills the game if all of the hero's lives are exhuasted
-	 *
-	 */
-	public void hardReset(){
-		dm.dispose();
-	}	
-	public void nextLevel(){
-		ArrayList<Integer> nowEmeralds = getEmeralds();
-		if (nowEmeralds.size()==0){
-			if(dm.currentLevelNumber<saves.length-1){
-				dm.loadLevel(saves[dm.currentLevelNumber+1]);
-				dm.currentLevelNumber++;
-			}
-		}
-	}
+	
+	
+	//Key binding
+	
+	
 	/**
 	 * 
 	 * Binds keys to certain movements (hero movements, level up/down)

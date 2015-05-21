@@ -30,7 +30,7 @@ public class Hobbin extends Entity{
 	public void howToMove(){
 		treasure.clear();
 		treasure.addAll(level.getEmeralds());
-//		treasure.addAll(level.getGold());
+		treasure.addAll(level.getGold());
 		getClosestTreasure();
 		if (treasure.size()!=0){
 			int x = treasure.get(indexOfClosest);

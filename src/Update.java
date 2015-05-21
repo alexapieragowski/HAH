@@ -31,8 +31,9 @@ public class Update implements Runnable {
 						entity.updateThis(inc);
 					}
 				}
-				level.repaint();
 				level.nextLevel();
+				level.update(inc);
+				level.repaint();
 				Thread.sleep(DELAY);
 			}
 		}catch (InterruptedException exception){}
