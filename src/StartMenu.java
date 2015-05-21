@@ -1,6 +1,7 @@
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
@@ -28,7 +29,7 @@ public class StartMenu extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	/**
-	 * Initializes buttons and 
+	 * Initializes buttons.
 	 *
 	 */
 	private void initialize(){
