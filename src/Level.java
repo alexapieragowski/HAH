@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
@@ -30,7 +29,7 @@ import javax.swing.KeyStroke;
  *         Created May 20, 2015.
  */
 
-public class Level extends JPanel implements Serializable{
+public class Level extends JPanel{
 	private DiggerMain dm;
 	protected int gameSize = 16;
 	protected int imageSize = 32;

@@ -1,5 +1,9 @@
 
-
+/**
+ * Controls all of the runnables in the game.
+ * @author pieragab.
+ *         Created May 20, 2015.
+ */
 public class Update implements Runnable {
 	private Level level;
 	private static final int DELAY = 16;//60 fps
