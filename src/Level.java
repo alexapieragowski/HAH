@@ -32,7 +32,7 @@ public class Level extends JPanel{
 	private DiggerMain dm;
 	protected int gameSize = 16;
 	protected int imageSize = 32;
-	private String saves[]={"Level1","Level2","Level3"};
+	private String saves[]={"Level1","Level2","Level3","Level4"};
 	protected Entity entities[][]= new Entity[gameSize][gameSize];
 //	private static final int DELAY = 1000;
 	protected Entity hero;
