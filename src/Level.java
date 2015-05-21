@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
@@ -24,7 +23,7 @@ import javax.swing.KeyStroke;
 
 
 
-public class Level extends JPanel implements Serializable{
+public class Level extends JPanel{
 	private DiggerMain dm;
 	protected int gameSize = 16;
 	protected int imageSize = 32;
@@ -268,7 +267,7 @@ public class Level extends JPanel implements Serializable{
 	public void nextLevel(){
 		ArrayList<Integer> nowEmeralds = getEmeralds();
 		if (nowEmeralds.size()==0){
-			if(dm.currentLevelNumber<saves.length){
+			if(dm.currentLevelNumber<saves.length-1){
 				dm.loadLevel(saves[dm.currentLevelNumber+1]);
 				dm.currentLevelNumber++;
 			}
@@ -285,7 +284,7 @@ public class Level extends JPanel implements Serializable{
 		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("SPACE"), "shoot");
 		this.getActionMap().put("levelUp", new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
-		    	if(dm.currentLevelNumber<saves.length){
+		    	if(dm.currentLevelNumber<saves.length-1){
 					dm.loadLevel(saves[dm.currentLevelNumber+1]);
 					dm.currentLevelNumber++;
 				}

@@ -1,23 +1,15 @@
 
 
+
 public class Update implements Runnable {
 	private Level level;
 	private static final int DELAY = 16;//60 fps
-	private boolean run;
 	
 	public Update(Level level) {
 		changeLevel(level);
-		run=true;
 	}
 	public void changeLevel(Level level){
 		this.level=level;
-	}
-	public void toggle(){
-		if (run) run=false;
-		else {
-			run=true;
-			run();
-		}
 	}
 	
 	@Override
@@ -26,7 +18,7 @@ public class Update implements Runnable {
 			long last = System.currentTimeMillis();
 			long current;
 			long inc;
-			while (run){
+			while (true){
 				current = System.currentTimeMillis();
 				inc=current-last;
 				last=current;
@@ -36,7 +28,7 @@ public class Update implements Runnable {
 					}
 				}
 				level.repaint();
-				boolean nextLevel = level.getEmeralds().size()==0;
+				level.nextLevel();
 				Thread.sleep(DELAY);
 			}
 		}catch (InterruptedException exception){}

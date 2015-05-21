@@ -1,5 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.io.FileInputStream;
@@ -98,12 +97,19 @@ public class DiggerMain extends JFrame {
 			System.out.println("File not found.");
 			throw new IllegalStateException(e);
 		}
-		t.suspend();
-		currentLevel.entities=load.entities;
-		currentLevel.hero=load.hero;
-		currentLevel.initEntities();
-		currentLevel.initializeStartConditions();
-		t.resume();
+		final Level loaded=load;
+		Thread t2 = new Thread() {
+			public void run() {
+				t.suspend();
+				currentLevel.entities=loaded.entities;
+				currentLevel.hero=loaded.hero;
+				currentLevel.initEntities();
+				currentLevel.initializeStartConditions();
+				t.resume();
+			}
+		};
+		t2.start();
+		try {t2.join();} catch (InterruptedException exception) {}
 		repaint();
 		currentLevel.repaint();
 	}
