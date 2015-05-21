@@ -8,7 +8,13 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 
-
+/**
+ * 
+ * Handles the "things" that are placed on the game board( dirt, enemies, hero, etc). 
+ *
+ * @author heshelhj.
+ *         Created May 20, 2015.
+ */
 
 public class Entity extends Canvas{
 	private Integer pointValue;
@@ -19,7 +25,17 @@ public class Entity extends Canvas{
 	protected transient BufferedImage sprite;
 	protected String spriteName;
 	protected int killPriority;
-	
+/**
+ * 	
+ * Contructs an entity 
+ *
+ * @param color --not really used, was useful before sprites were implemented
+ * @param pointValue --points gained from killing the thing
+ * @param dm --DiggerMain
+ * @param x_position --the entities x position
+ * @param y_position --the entities y position
+ * @param spriteName --name of the sprite file
+ */
 	public Entity(Color color, Integer pointValue,DiggerMain dm, int x_position, int y_position,String spriteName) {
 		this.pointValue=pointValue;
 		this.color=color;
@@ -40,6 +56,11 @@ public class Entity extends Canvas{
 		}
 		initDmLevel(dm);
 	}
+	/**
+	 * 
+	 * Loads the sprite from a file
+	 *
+	 */
 	public void loadImage(){
 		String picFile = "Images/"+spriteName+".png";
 	    try {                
@@ -48,17 +69,34 @@ public class Entity extends Canvas{
 	    	System.out.println("Could not open picture file: " + picFile);
 	    }
 	}
+	/**
+	 * 
+	 *Initializes the DiggerMain 
+	 *
+	 * @param dm
+	 */
 	public void initDmLevel(DiggerMain dm) {
 		this.dm=dm;
 		level = dm.currentLevel;
 		loadImage();
 	}
-	
+	/**
+	 * draws the sprites
+	 * @param g Graphics g
+	 */
 	public void paint(Graphics g){ //Eventually these will be sprites instead of rectangles.
 		super.paint(g);
 		g.drawImage(sprite, position[0], position[1], null);
 		
 	}
+	/**
+	 * 
+	 * is the movement method for all entities.  It also checks if an entity should kill another 
+	 * based on kill priority. 
+	 *
+	 * @param dx --amount the entity should move in the x direction
+	 * @param dy --amount the entity should move in the y direction
+	 */
 	public void movement(int dx, int dy) {
 		if (!(dx==0&&dy==0)){
 			Entity next;
@@ -91,10 +129,19 @@ public class Entity extends Canvas{
 	 */
 	public void updateThis(long time) {
 	}
-	
+	/**
+	 * 
+	 * Adds points to the score
+	 *
+	 */
 	public void die(){
 		awardPoints();
 	}
+	/**
+	 * 
+	 * Adds points to the score 
+	 *
+	 */
 	public void awardPoints(){
 		dm.addScore(pointValue);
 	}

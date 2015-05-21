@@ -3,7 +3,13 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.Random;
 
-
+/**
+ * 
+ *Creates a Nobbin enemy that will go after the hero
+ *
+ * @author heshelhj.
+ *         Created May 20, 2015.
+ */
 public class Nobbin extends Entity{
 	private Entity hero;
 	private int goalx;
@@ -25,6 +31,12 @@ public class Nobbin extends Entity{
 		goaly = hero.position[1];
 		sinceLast=DELAY;
 	}
+	/**
+	 * 
+	 * The pathfinding method for the Nobbin. Uses the A* algorithm to find the go after the hero
+	 *
+	 * @return
+	 */
 	private Node aStar(){//Massive overkill?
 		boolean[][] visited = new boolean[16][16];
 		PriorityQueue<Node> open = new PriorityQueue<Node>();
@@ -74,6 +86,11 @@ public class Nobbin extends Entity{
 			n=n.parent;
 		}
 	}
+	/**
+	 * 
+	 * Tells the Nobbin to move based on A*
+	 *
+	 */
 	public void howToMove(){
 		hero = level.hero;
 		if (path.size()==0||!(hero.position[0]==goalx && hero.position[1]==goaly)){
@@ -84,6 +101,10 @@ public class Nobbin extends Entity{
 		}
 		if (path.size()!=0) dpos = path.remove(path.size()-1);
 	}
+	/**
+	 * updates the Nobbins movement continuously
+	 * @param time long time since last update
+	 */
 	public void updateThis(long time) {
 		sinceLast+=time;
 		if (sinceLast>DELAY){

@@ -9,7 +9,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
+/**
+ * 
+ * This is the main class for the Digger game. This is where the board is created.
+ *
+ * @author heshelhj.
+ *         Created May 20, 2015.
+ */
 
 //Please let this work
 public class DiggerMain extends JFrame {
@@ -29,49 +35,63 @@ public class DiggerMain extends JFrame {
 		mainFrame.setTitle("Digger");
 		mainFrame.setVisible(true);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mainFrame.requestFocusInWindow();
 		if (mainFrame.t!=null) mainFrame.t.start();
 	}
-	
+/**
+ * 	
+ * This method contructs the Digger game board itself
+ *
+ */
 	public DiggerMain() {
 		Container window = getContentPane();
 	    window.setLayout(new BorderLayout());
-	    Font myfont = new Font("arial", Font.BOLD, 36);
-	    
-	    score = new JLabel("Score: "+currentScore.toString());
-	    score.setFont(myfont);
-	    window.add(score, BorderLayout.NORTH);
-	    
-	    lifes = new JLabel("Lifes: "+currentLifes.toString());
-	    lifes.setFont(myfont);
-	    window.add(lifes, BorderLayout.SOUTH);
 	    
 	    boolean toggle = true;
 	    //Below is just Testing to see what levels will currently look like
 	    //Once we get some pre-made levels flushed out this can just load the 
 	    //first one or display a menu screen of some sort.
 	    if (toggle){
+	    	Font myfont = new Font("arial", Font.BOLD, 36);
+	    	
+	    	score = new JLabel("Score: "+currentScore.toString());
+		    score.setFont(myfont);
+		    window.add(score, BorderLayout.NORTH);
+		    
+		    lifes = new JLabel("Lifes: "+currentLifes.toString());
+		    lifes.setFont(myfont);
+		    window.add(lifes, BorderLayout.SOUTH);
+		    
 		    currentLevel = new Level(this);
 		    currentLevel.initEntities();
-		    mainscreen=currentLevel;
+		    mainscreen = currentLevel;
 		    mainscreen.setFocusable(true);
 		    window.add(mainscreen,BorderLayout.CENTER);
-		    u=new Update(currentLevel);
+		    u = new Update(currentLevel);
 		    t = new Thread(u);
 	    }
 	    else{
 		    mainscreen = new LevelBuilder(this);
 		    window.add(mainscreen,BorderLayout.CENTER);
 		    mainscreen.requestFocusInWindow();
-	    }	    
+	    }
+	    
 	}
-	
+/**
+ * 	
+ * This method handles the scoring of the game. It resets the label on the DiggerMain if the hero scores points
+ *
+ * @param score
+ */
 	public void addScore(Integer score){
 		this.score.setText("Score: "+currentScore.toString()+" ");
 		this.currentScore += score;
 		this.score.setText("Score: "+currentScore.toString());
 	}
-	
+/**
+ * 	
+ * This method handles the resetting the lives label on the DiggerMain
+ *
+ */
 	public void loseLife(){
 		this.currentLifes--;
 		this.lifes.setText("Lifes: "+currentLifes.toString());
@@ -81,7 +101,12 @@ public class DiggerMain extends JFrame {
 	/*
 	 * Placeholder for now, once the game window is written it will replace the Level in the game window with the load.
 	 */
-	@SuppressWarnings("deprecation")
+/**
+ * 	
+ *Loads a game level from a file
+ *
+ * @param FileName
+ */
 	public void loadLevel(String FileName){
 		Level load=null;
 		try{
@@ -99,6 +124,7 @@ public class DiggerMain extends JFrame {
 		}
 		final Level loaded=load;
 		Thread t2 = new Thread() {
+			@SuppressWarnings("deprecation")
 			public void run() {
 				t.suspend();
 				currentLevel.entities=loaded.entities;

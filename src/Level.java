@@ -21,8 +21,13 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
-
-
+/**
+ * 
+ *Basically this class runs the game. It handles adding things to the DiggerMain, key bindings, and resets
+ *
+ * @author heshelhj.
+ *         Created May 20, 2015.
+ */
 public class Level extends JPanel{
 	private DiggerMain dm;
 	protected int gameSize = 16;
@@ -78,11 +83,22 @@ public class Level extends JPanel{
 		}
 		keybinding();
 	}
+	/**
+	 * 
+	 * Intializes a DiggerMain and binds the key presses to the game
+	 *
+	 * @param dm
+	 */
 	public void initDm(DiggerMain dm){
 		this.dm=dm;
 		initbg();
 		keybinding();
 	}
+	/**
+	 * 
+	 *Intializes background
+	 *
+	 */
 	public void initbg(){
 		String picFile = "Images/Background.png";
 	    try {                
@@ -91,6 +107,11 @@ public class Level extends JPanel{
 	    	System.out.println("Could not open picture file: " + picFile);
 	    }
 	}
+	/**
+	 * 
+	 * Initializes enemies
+	 *
+	 */
 	public void initEntities(){
 		for (int i=0;i<16;i++){
 			for (int j=0;j<16;j++){
@@ -98,6 +119,10 @@ public class Level extends JPanel{
 			}
 		}
 	}	
+	/**
+	 * Draws the game board
+	 * @param g Graphics g
+	 */
 	public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, null);
@@ -122,7 +147,11 @@ public class Level extends JPanel{
 //		}
 //	}
 	
-	
+	/**
+	 * 
+	 * Saves a created level
+	 *
+	 */
 	public void saveLevel(){
 		new File("Saves").mkdirs();
     	String path = Paths.get("Saves").toAbsolutePath().toString();
@@ -168,16 +197,35 @@ public class Level extends JPanel{
 //	}
 	
 	//adding things for Testing
+	/**
+	 * 
+	 * Places a hero on the board
+	 *
+	 * @param x -- the initial x position
+	 * @param y -- the initial y position
+	 */
 	public void addHero(int x, int y) { //Puts a hero at the chosen location, for initial level setup.
 		entities[x][y]= new Hero(dm, x*imageSize, y*imageSize);
 		hero=entities[x][y];
 		repaint();
 	}
+	/**
+	 * 
+	 * Adds emeralds to the board
+	 *
+	 * @param x -- the x position
+	 * @param y -- the y position
+	 */
 	public void addEmerald(int x, int y) { //Puts a Emerald at the chosen location, for initial level setup.
 		entities[x][y]= new Entity(Color.green,100,dm, x*imageSize, y*imageSize,"Emerald");
 		repaint();
 	}
-	
+	/**
+	 * 
+	 *adds the emeralds positions to an arrayList
+	 *
+	 * @return and arrayList of positions
+	 */
 	public ArrayList<Integer> getEmeralds(){
 		ArrayList<Integer> emeralds = new ArrayList<Integer>();
 		for (int i=0;i<gameSize;i++){
@@ -190,7 +238,12 @@ public class Level extends JPanel{
 		}
 		return emeralds;
 	}
-	
+	/**
+	 * 
+	 * adds the hero to their own arrayList
+	 *
+	 * @return -- an arrayList with the hero's position
+	 */
 	public ArrayList<Integer> getHero(){
 		ArrayList<Integer> heroList = new ArrayList<Integer>();
 		for (int i=0;i<16;i++){
@@ -203,7 +256,12 @@ public class Level extends JPanel{
 		}
 		return heroList;
 	}
-	
+	/**
+	 * 
+	 *adds the Hobbins positions to an arrayList
+	 *
+	 * @return and arrayList of positions
+	 */
 	public ArrayList<Integer> getHobbins(){
 		ArrayList<Integer> hobbins = new ArrayList<Integer>();
 		for (int i=0;i<16;i++){
@@ -216,7 +274,12 @@ public class Level extends JPanel{
 		}
 		return hobbins;
 	}
-	
+	/**
+	 * 
+	 *adds the Nobbins positions to an arrayList
+	 *
+	 * @return and arrayList of positions
+	 */
 	public ArrayList<Integer> getNobbins(){
 		ArrayList<Integer> nobbins = new ArrayList<Integer>();
 		for (int i=0;i<16;i++){
@@ -229,29 +292,38 @@ public class Level extends JPanel{
 		}
 		return nobbins;
 	}
-	
+	/**
+	 * 
+	 * Initializes the hero, hobbin, and nobbin position lists
+	 *
+	 */
 	public void initializeStartConditions(){
 		heroList = getHero();
 		hobbins = getHobbins();
 		nobbins = getNobbins();
 	}
-	
+	/**
+	 * 
+	 * Resets hobbins, nobbins, and the hero to their original position of the hero dies
+	 * but still has lives left
+	 *
+	 */
 	public void resetAfterDie(){
 		ArrayList<Integer> heroListcur = getHero();
 		ArrayList<Integer> hobbinscur = getHobbins();
 		ArrayList<Integer> nobbinscur = getNobbins();
 		entities[heroListcur.get(0)/imageSize][heroListcur.get(1)/imageSize] = new Entity(Color.black,0,dm,heroListcur.get(0),heroListcur.get(1),"Empty");
+		Hero newHero = new Hero(dm, heroList.get(0), heroList.get(1));
+		entities[heroList.get(0)/imageSize][heroList.get(1)/imageSize] = newHero;
 		for (int i=0; i<hobbinscur.size();i+=2){
 			entities[hobbinscur.get(i)/imageSize][hobbinscur.get(i+1)/imageSize] = new Entity(Color.black,0,dm,hobbinscur.get(i),hobbinscur.get(i+1),"Empty");
 		}
-		for (int i=0; i<nobbinscur.size();i+=2){
-			entities[nobbinscur.get(i)/imageSize][nobbinscur.get(i+1)/imageSize] = new Entity(Color.black,0,dm,nobbinscur.get(i),nobbinscur.get(i+1),"Empty");
-		}
-		Hero newHero = new Hero(dm, heroList.get(0), heroList.get(1));
-		entities[heroList.get(0)/imageSize][heroList.get(1)/imageSize] = newHero;
 		for (int i=0; i<hobbins.size()-1; i+=2){
 			Hobbin newHobbin = new Hobbin(dm, hobbins.get(i), hobbins.get(i+1));
 			entities[hobbins.get(i)/imageSize][hobbins.get(i+1)/imageSize] = newHobbin;
+		}
+		for (int i=0; i<nobbinscur.size();i+=2){
+			entities[nobbinscur.get(i)/imageSize][nobbinscur.get(i+1)/imageSize] = new Entity(Color.black,0,dm,nobbinscur.get(i),nobbinscur.get(i+1),"Empty");
 		}
 		for (int i=0; i<nobbins.size()-1; i+=2){
 			Nobbin newNobbin = new Nobbin(dm, nobbins.get(i), nobbins.get(i+1));
@@ -259,11 +331,14 @@ public class Level extends JPanel{
 		}
 		hero = newHero;
 	}
-	
+	/**
+	 * 
+	 * Kills the game if all of the hero's lives are exhuasted
+	 *
+	 */
 	public void hardReset(){
 		dm.dispose();
-	}
-	
+	}	
 	public void nextLevel(){
 		ArrayList<Integer> nowEmeralds = getEmeralds();
 		if (nowEmeralds.size()==0){
@@ -273,7 +348,11 @@ public class Level extends JPanel{
 			}
 		}
 	}
-	
+	/**
+	 * 
+	 * Binds keys to certain movements (hero movements, level up/down)
+	 *
+	 */
 	public void keybinding(){
 		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("U"), "levelUp");
 		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("D"), "levelDown");
